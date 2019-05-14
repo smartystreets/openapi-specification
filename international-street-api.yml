@@ -19,8 +19,6 @@ paths:
       - verify
       summary: For sending a single address
       parameters:
-        - $ref: '#/components/parameters/auth-id'
-        - $ref: '#/components/parameters/auth-token'
         - $ref: '#/components/parameters/country'
         - $ref: '#/components/parameters/geocode'
         - $ref: '#/components/parameters/language'
@@ -96,6 +94,11 @@ paths:
               schema:
                 example: Our own upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.
                 type: string
+
+security: 
+- auth_id: []
+  auth_token: []
+- website_key: []
         
 tags:
 - name: street-address
@@ -107,18 +110,6 @@ externalDocs:
   
 components:
   parameters:
-    auth-id:
-      name: auth-id
-      in: query
-      description: "**Auth ID** *Example: 123* Authentication information"
-      schema:
-        type: string
-    auth-token:
-      name: auth-token
-      in: query
-      description: "**Auth Token** *Example: abc* Authentication information"
-      schema:
-        type: string
     country:
       name: country
       in: query
@@ -409,3 +400,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Components'
+  securitySchemes:
+    auth_id:
+      type: apiKey
+      name: auth-id
+      in: query
+    auth_token:
+      type: apiKey
+      name: auth-token
+      in: query
+    website_key:
+      type: apiKey
+      name: key
+      in: query

@@ -21,8 +21,6 @@ paths:
       description: |
         Provide either a 'city'/'state' combo or just a 'zipcode' and an optional 'input_id'
       parameters:
-        - $ref: '#/components/parameters/auth-id'
-        - $ref: '#/components/parameters/auth-token'
         - $ref: '#/components/parameters/city'
         - $ref: '#/components/parameters/state'
         - $ref: '#/components/parameters/zipcode'
@@ -93,6 +91,11 @@ paths:
         403:
           description: Invalid API key, or other reason why access is forbidden.
 
+security: 
+- auth_id: []
+  auth_token: []
+- website_key: []
+
 tags:
 - name: lookup
   description: Search City/States or ZIPCodes
@@ -103,18 +106,6 @@ externalDocs:
   
 components:
   parameters:
-    auth-id:
-      name: auth-id
-      in: query
-      description: "**Auth ID** *Example: 123* Authentication information"
-      schema:
-        type: string
-    auth-token:
-      name: auth-token
-      in: query
-      description: "**Auth Token** *Example: abc* Authentication information"
-      schema:
-        type: string
     city:
       name: city
       in: query
@@ -233,3 +224,16 @@ components:
         - {"city": "North Pole", "state": "AK"}
         - {"zipcode": "12345"}
         - {"city": "cupertino", "state": "california", "zipcode": "95014"}
+  securitySchemes:
+    auth_id:
+      type: apiKey
+      name: auth-id
+      in: query
+    auth_token:
+      type: apiKey
+      name: auth-token
+      in: query
+    website_key:
+      type: apiKey
+      name: key
+      in: query

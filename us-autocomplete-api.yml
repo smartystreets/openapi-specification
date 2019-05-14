@@ -19,8 +19,6 @@ paths:
       - suggest
       summary: For finding an address
       parameters:
-        - $ref: '#/components/parameters/auth-id'
-        - $ref: '#/components/parameters/auth-token'
         - $ref: '#/components/parameters/prefix'
         - $ref: '#/components/parameters/suggestions'
         - $ref: '#/components/parameters/city_filter'
@@ -71,6 +69,11 @@ paths:
               schema:
                 example: When using public "website key" authentication, we restrict the number of requests coming from a given source over too short of a time. If you use "website key" authentication, you can avoid this error by adding your IP address as an authorized host for the website key in question.
                 type: string
+
+security: 
+- auth_id: []
+  auth_token: []
+- website_key: []
         
 tags:
 - name: street-address
@@ -82,18 +85,6 @@ externalDocs:
   
 components:
   parameters:
-    auth-id:
-      name: auth-id
-      in: query
-      description: "**Auth ID** *Example: 123* Authentication information"
-      schema:
-        type: string
-    auth-token:
-      name: auth-token
-      in: query
-      description: "**Auth Token** *Example: abc* Authentication information"
-      schema:
-        type: string
     prefix:
       name: prefix
       in: query
@@ -168,3 +159,16 @@ components:
         state:
           type: string
           example: 'ME'
+  securitySchemes:
+    auth_id:
+      type: apiKey
+      name: auth-id
+      in: query
+    auth_token:
+      type: apiKey
+      name: auth-token
+      in: query
+    website_key:
+      type: apiKey
+      name: key
+      in: query
