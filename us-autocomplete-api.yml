@@ -1,0 +1,170 @@
+openapi: 3.0.1
+info:
+  title: "US-Autocomplete-API"
+  description: |
+    Utilize the SmartyStreets RESTful API if you want us to suggest some addresses to verify for you, you obviously still have the final say for what you end up verifying though. 
+  termsOfService: "https://smartystreets.com/legal/terms-of-service"
+  contact:
+    name: "the Smarty Pit-Crew"
+    email: "support@smartystreets.com"
+  version: 3.2.8
+  
+servers:
+- url: https://us-autocomplete.api.smartystreets.com/
+  
+paths:
+  /suggest:
+    get:
+      tags:
+      - suggest
+      summary: For finding an address
+      parameters:
+        - $ref: '#/components/parameters/auth-id'
+        - $ref: '#/components/parameters/auth-token'
+        - $ref: '#/components/parameters/prefix'
+        - $ref: '#/components/parameters/suggestions'
+        - $ref: '#/components/parameters/city_filter'
+        - $ref: '#/components/parameters/state_filter'
+        - $ref: '#/components/parameters/prefer'
+        - $ref: '#/components/parameters/prefer_ratio'
+        - $ref: '#/components/parameters/geolocate'
+        - $ref: '#/components/parameters/geolocate_precision'
+      responses:
+        200:
+          description: OK(success!), The response body will be a JSON array containing zero or more matches for the input provided with the request. The structure of the response is the same for both GET and POST requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200'
+        401:
+          description: "*Unauthorized*"
+          content:
+            text/plain:
+              schema:
+                example: The credentials were provided incorrectly or did not match any existing, active credentials.
+                type: string
+        402:
+          description: "*Payment Required*"
+          content:
+            text/plain:
+              schema:
+                example: There is no active subscription for the account associated with the credentials submitted with the request.
+                type: string
+        422:
+          description: "*Unproccessable Entity:*"
+          content:
+            text/plain:
+              schema:
+                example: A GET request lacked required fields.
+                type: string
+        400:
+          description: "*Bad Request (Malformed Payload)*"
+          content:
+            text/plain:
+              schema:
+                example: The request body of a POST requeset contained no lookups or contained malformed JSON.
+                type: string
+        429:
+          description: "*Too Many Requests*"
+          content:
+            text/plain:
+              schema:
+                example: When using public "website key" authentication, we restrict the number of requests coming from a given source over too short of a time. If you use "website key" authentication, you can avoid this error by adding your IP address as an authorized host for the website key in question.
+                type: string
+        
+tags:
+- name: street-address
+  description: Search Street Addresses
+  
+externalDocs:
+  description: "Extensive documentation for the US-ZIPCode-API"
+  url: https://smartystreets.com/docs/cloud/us-zipcode-api
+  
+components:
+  parameters:
+    auth-id:
+      name: auth-id
+      in: query
+      description: "**Auth ID** *Example: 123* Authentication information"
+      schema:
+        type: string
+    auth-token:
+      name: auth-token
+      in: query
+      description: "**Auth Token** *Example: abc* Authentication information"
+      schema:
+        type: string
+    prefix:
+      name: prefix
+      in: query
+      description: "**Prefix** *Example: 123 mai* *Required* The part of the address that has alread been typed. Maximum length is 128 bytes."
+      schema:
+        type: string
+    suggestions:
+      name: suggestions
+      in: query
+      description: "**Suggestions** Maximum number of address suggestions, range[1, 10]. Default is 10."
+      schema:
+        type: integer
+    city_filter:
+      name: city_filter
+      in: query
+      description: "**City** *Example: Chicago,Los+Angeles* A list of city names, separated by commas, to which to limit the results."
+      schema:
+        type: string
+    state_filter:
+      name: state_filter
+      in: query
+      description: "**State** *Example: HI,AK,NY* A list of state names (2-letter abbreviations), separated by commas, to which to limit the results."
+      schema:
+        type: string
+    prefer:
+      name: prefer
+      in: query
+      description: "**City,State** *Example: Houston,TX;Las+Vegas,NV* A list of cities/states to prefer at the top of the results."
+      schema:
+        type: string
+    prefer_ratio:
+      name: prefer_ratio
+      in: query
+      description: "**PreferRatio** *Example: 0.3* Specifies the percentage of address suggestions that should be from preferred cities/states. Expressed as a decimal value, range[0,1](input out of bounds is adjusted."
+      schema:
+        type: number
+    geolocate:
+      name: geolocate
+      in: query
+      description: "**Geolocate** Whether to prefer address suggestions in the user's city and state, based on their IP address."
+      schema:
+        type: boolean
+    geolocate_precision:
+      name: geolocate_precision
+      in: query
+      description: "**Geolocate Precision** If the *geolocate* field is set to *true* then setting this field to *city* causes the geolocated results that bubble up to the top of the response to be from the city/state corresponding to the sender's IP address. Setting this field to *state* causes results from the sender's entire state to be preferred."
+      schema:
+        type: string
+   
+  schemas:
+    200:
+      title: Successful response
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Suggestions'
+    Suggestions:
+      title: Suggestions
+      type: object
+      properties:
+        text:
+          type: string
+          example: '123 Main Rd, Abbot ME'
+        street_line:
+          type: string
+          example: '123 Main Rd'
+        city:
+          type: string
+          example: 'Abbot'
+        state:
+          type: string
+          example: 'ME'
