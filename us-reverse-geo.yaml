@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: us-reverse-geo
-  version: '1.0'
+  version: '0.23'
   summary: 'Converts latitudinal and longitudinal coordinates into the nearest street addresses '
   description: This api runs Smarty's reverse geocoding algorithms to convert latitudinal and longitudinal coordinates into the closest street addresses at lightning speed!
   contact:
