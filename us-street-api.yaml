@@ -1,9 +1,7 @@
 openapi: 3.1.0
-x-stoplight:
-  id: kr9m5y9wnp7lb
 info:
   title: Smarty US Street Address Verifier
-  version: '1.0'
+  version: '5.3'
   summary: Smarty's US Street Address Verifier API verifies addresses and returns relevant information regarding the address
   description: ''
   contact:
@@ -27,7 +25,20 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulResponse'
-      description: "To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the street, city, state, and candidates fields (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smartystreets.com/street-address?\n\tauth-id=YOUR+AUTH-ID+HERE&\n\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\tlicense=YOUR+LICENSE+HERE&\n\tstreet=1600+amphitheatre+pkwy&\n\tcity=mountain+view&\n\tstate=CA&\n\tcandidates=10'\n\nPlease note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.\n\n"
+        '400':
+          description: 'Bad Request (Malformed Payload): A GET request lacked a street field, or the request body of a POST request contained malformed JSON. (example: submitting an integer value in the ZIP Code field when a string is expected)'
+        '401':
+          description: 'Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.'
+        '402':
+          description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
+        '429':
+          description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. If you use embedded key authentication, you can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
+      description: |
+        To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the street, city, state, and candidates fields (line breaks added for readability):
+
+        curl -v 'https://us-street.api.smartystreets.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&street=1600+amphitheatre+pkwy&city=mountain+view&state=CA&candidates=10'
+
+        Please note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.
       parameters:
         - schema:
             type: string
@@ -60,16 +71,8 @@ paths:
       operationId: post-street-address
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/ResponseComponent'
-      description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smartystreets.com/street-address?\n\t\tauth-id=YOUR+AUTH-ID+HERE&\n\t\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\t\tlicense=YOUR+LICENSE+HERE&'\n\t-H \"Content-Type: application/json; charset=utf-8\"\n\t--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'"
+          $ref: '#/components/responses/SuccessfulResponse'
+      description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smartystreets.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&' -H \"Content-Type: application/json; charset=utf-8\"\n--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'"
       parameters:
         - schema:
             type: string
@@ -814,7 +817,7 @@ components:
       description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smartystreets.com/street-address?\n\t\tauth-id=YOUR+AUTH-ID+HERE&\n\t\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\t\tlicense=YOUR+LICENSE+HERE&'\n\t-H \"Content-Type: application/json; charset=utf-8\"\n\t--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'\n"
   responses:
     SuccessfulResponse:
-      description: Successful Response containing address information. If an invalid address is given then the index of that address will be empty
+      description: 'OK (success!): A JSON array containing zero or more address matches for the input provided with the request. If none of the submitted addresses validate, the array will be empty ([]). The structure of the response is the same for both GET and POST requests.'
       content:
         application/json:
           schema:
