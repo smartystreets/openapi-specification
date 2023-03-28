@@ -20,8 +20,6 @@ paths:
       summary: Single Address Validation
       tags: []
       operationId: get-street-address
-      requestBody:
-        $ref: '#/components/requestBodies/BasicRequest'
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulResponse'
@@ -169,8 +167,6 @@ components:
   schemas:
     ResponseComponent:
       title: Response Component
-      x-stoplight:
-        id: od31v7qlhvyk7
       type: object
       description: Object found in the response list to the request
       properties:
@@ -229,8 +225,6 @@ components:
           $ref: '#/components/schemas/AnalysisObject'
     ComponentsObject:
       title: Components Object
-      x-stoplight:
-        id: mcm2nw6sqmkbd
       type: object
       description: Object representing the different components of a verified address
       properties:
@@ -316,8 +310,6 @@ components:
           maxLength: 1
     MetadataObject:
       title: Metadata Object
-      x-stoplight:
-        id: ymcsqlk8tzu4x
       type: object
       properties:
         record_type:
@@ -467,8 +459,6 @@ components:
       description: Object representing the different metadata of a verified address
     AnalysisObject:
       title: Analysis Object
-      x-stoplight:
-        id: dhf8pa451uxug
       type: object
       properties:
         dpv_match_code:
