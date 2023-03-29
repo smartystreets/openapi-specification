@@ -1,0 +1,212 @@
+openapi: 3.1.0
+info:
+  title: International Address Autocomplete
+  version: '0.9'
+  description: "This API...\n\nReturns suggestions that are fully verified global addresses.\nUses fuzzy logic during searching to:\nAllow for missing directionals and street suffixes.\nAllow substitution of street suffixes and secondary designators. E.g., ST is accepted for AVE; APT is accepted for UNIT, etc.\nAllow full or partial spelling of street suffixes and secondary designators. E.g., ST can be spelled as STR or STREET and still match.\nFilters and preferences allow for multiple cities in a single country.\nAllows searching on alternate cities.\nSupports the following 137 countries:\nCountry\tISO3 Alpha-3\nCountry Code\nAlbania\tALB\nAlgeria\tDZA\nAndorra\tAND\nAngola\tAGO\nArgentina\tARG\nAruba\tABW\nAustralia\tAUS\nAustria\tAUT\nAzerbaijan\tAZE\nBahamas\tBHS\nBahrain\tBHR\nBarbados\tBRB\nBelarus\tBLR\nBelgium\tBEL\nBelize\tBLZ\nBenin\tBEN\nBermuda\tBMU\nBolivia\tBOL\nBosnia and Herzegovina\tBIH\nBotswana\tBWA\nBrazil\tBRA\nBrunei Darussalam\tBRN\nBulgaria\tBGR\nBurkina Faso\tBFA\nBurundi\tBDI\nCameroon\tCMR\nCanada\tCAN\nChile\tCHL\nChina\tCHN\nColombia\tCOL\nCongo-Brazzaville\tCOG\nCongo-Kinshasa\tCOD\nCosta-Rica\tCRI\nCroatia\tHRV\nCuba\tCUB\nCyprus\tCYP\nCzech Republic\tCZE\nDenmark\tDNK\nDominican Republic\tDOM\nEcuador\tECU\nEgypt\tEGY\nEl Salvador\tSLV\nEstonia\tEST\nFinland\tFIN\nFrance\tFRA\nGabon\tGAB\nGeorgia\tGEO\nGermany\tDEU\nGhana\tGHA\nGreece\tGRC\nGuatemala\tGTM\nGuyana\tGUY\nHonduras\tHND\nHong Kong\tHKG\nHungary\tHUN\nIceland\tISL\nIndia\tIND\nIndonesia\tIDN\nIraq\tIRQ\nIreland\tIRL\nIsrael\tISR\nItaly\tITA\nJamaica\tJAM\nJapan\tJPN\nJordan\tJOR\nKazakhstan\tKAZ\nKenya\tKEN\nKorea (South)\tKOR\nKosovo\tXKX\nKuwait\tKWT\nLatvia\tLVA\nLebanon\tLBN\nLesotho\tLSO\nLiechtenstein (Territory CHE)\tLIE\nLithuania\tLTU\nLuxembourg\tLUX\nMacau\tMAC\nMacedonia\tMKD\nMalawi\tMWI\nMalaysia\tMYS\nMali\tMLI\nMalta\tMLT\nMauritania\tMRT\nMauritius\tMUS\nMexico\tMEX\nMontenegro\tMNE\nMorocco\tMAR\nMozambique\tMOZ\nNamibia\tNAM\nNetherlands\tNLD\nNew Zealand\tNZL\nNicaragua\tNIC\nNiger\tNER\nNigeria\tNGA\nNorway\tNOR\nOman\tOMN\nPanama\tPAN\nParaguay\tPRY\nPeru\tPER\nPhilippines\tPHL\nPoland\tPOL\nPortugal\tPRT\nQatar\tQAT\nRomania\tROU\nRussia\tRUS\nRwanda\tRWA\nSaint Kitts and Nevis\tKNA\nSaudi Arabia\tSAU\nSenegal\tSEN\nSerbia\tSRB\nSingapore\tSGP\nSlovakia\tSVK\nSlovenia\tSVN\nSouth Africa\tZAF\nSpain\tESP\nSuriname\tSUR\nSwaziland\tSWZ\nSweden\tSWE\nSwitzerland, Liechtenstein\tCHE\nTaiwan\tTWN\nTajikistan\tTJK\nTanzania\tTZA\nThailand\tTHA\nTogo\tTGO\nTrinidad and Tobago\tTTO\nTunisia\tTUN\nTurkey\tTUR\nUganda\tUGA\nUkraine\tUKR\nUnited Arab Emirates\tARE\nUnited Kingdom\tGBR\nUruguay\tURY\nVenezuela\tVEN\nViet Nam\tVNM\nYemen\tYEM\nZambia\tZMB\nZimbabwe\tZWE\n"
+  termsOfService: 'https://smartystreets.com/legal/terms-of-service'
+  license:
+    url: 'https://www.smarty.com/legal/terms-of-service'
+    name: Smarty License
+  contact:
+    name: the Smarty Pit-Crew
+    email: support@smartystreets.com
+servers:
+  - url: 'https://international-autocomplete.api.smartystreets.com'
+externalDocs:
+  description: Extensive documentation for the International Address Autocomplete API
+  url: 'https://www.smarty.com/docs/cloud/international-address-autocomplete-api'
+paths:
+  /lookup:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      security:
+        - auth-id: []
+          auth-token: []
+        - embedded-key: []
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+        '400':
+          description: 'Bad Request (Malformed Payload): The request was malformed in some way and could not be parsed.'
+          content:
+            text/plain:
+              schema:
+                example: The request body of a POST requeset contained no lookups or contained malformed JSON.
+                type: string
+        '401':
+          description: 'Unauthorized: The embedded key was provided incorrectly or did not match any existing, active embedded keys. Or the host in the referer header did not match a host assigned to your embedded key.'
+          content:
+            text/plain:
+              schema:
+                example: 'The credentials were provided incorrectly or did not match any existing, active credentials.'
+                type: string
+        '402':
+          description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
+          content:
+            text/plain:
+              schema:
+                example: There is no active subscription for the account associated with the credentials submitted with the request.
+                type: string
+        '422':
+          description: 'Unprocessable Entity (Unsuitable parameters): Returns errors describing what needs to be corrected.'
+          content:
+            text/plain:
+              schema:
+                example: A GET request lacked required fields.
+                type: string
+        '429':
+          description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. You can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
+          content:
+            text/plain:
+              schema:
+                example: 'When using public "website key" authentication, we restrict the number of requests coming from a given source over too short of a time. If you use "website key" authentication, you can avoid this error by adding your IP address as an authorized host for the website key in question.'
+                type: string
+      operationId: get-lookup
+      parameters:
+        - $ref: '#/components/parameters/Host'
+        - $ref: '#/components/parameters/Referer'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/max_results'
+        - $ref: '#/components/parameters/distance'
+        - $ref: '#/components/parameters/geolocation'
+        - $ref: '#/components/parameters/include_only_administrative_area'
+        - $ref: '#/components/parameters/include_only_locality'
+        - $ref: '#/components/parameters/include_only_postal_code'
+        - $ref: '#/components/parameters/latitude'
+        - $ref: '#/components/parameters/longitude'
+components:
+  schemas:
+    candidate:
+      title: candidate
+      type: object
+      properties:
+        street:
+          type: string
+        locality:
+          type: string
+        administrative_area:
+          type: string
+        sub_administrative_area:
+          type: string
+        super_administrative_area:
+          type: string
+        postal_code:
+          type: string
+        country_iso3:
+          type: string
+      examples:
+        - street: De Blikken 1
+          locality: Oostburg
+          administrative_area: Zeeland
+          sub_administrative_area: Sluis
+          postal_code: 4501 AC
+          country_iso3: NLD
+  securitySchemes:
+    auth-id:
+      type: apiKey
+      name: auth-id
+      in: query
+    auth-token:
+      type: apiKey
+      name: auth-token
+      in: query
+    embedded-key:
+      type: apiKey
+      name: key
+      in: query
+  responses:
+    '200':
+      description: 'OK (success!): The response body is a JSON object with a suggestions array containing suggestions based on the supplied input parameters.'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/candidate'
+  parameters:
+    Host:
+      name: Host
+      in: header
+      required: true
+      schema:
+        type: string
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Note: Most HTTP clients such as the browser, or programming language HTTP libraries will add this header automatically. Ex: Host: us-autocomplete-pro.api.smartystreets.com'
+    Referer:
+      name: Referer
+      in: header
+      schema:
+        type: string
+      description: 'The Referer is required when an embedded key is used for authentication. Its value is in the form of a URL, where the host component must match a host value assigned to your embedded key. Note: Some HTTP clients such as a browser or programming language HTTP libraries will add this header automatically. However some interfaces such as cURL do not, so you may need to add it manually. Ex: Referer: https://mycoolwebsite.com'
+      required: true
+    country:
+      name: country
+      in: query
+      required: true
+      schema:
+        type: string
+      description: 'The ISO3 Alpha-3 country code where the desired address is located. Only uppercase values are allowed. See supported country codes (https://www.smarty.com/docs/cloud/international-address-autocomplete-api#supported-country-codes).   Maximum length is 3 bytes.'
+    search:
+      name: search
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The part of the address that has already been typed. Maximum length is 128 bytes.
+    max_results:
+      name: max_results
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 'Maximum number of address suggestions to return; range [1, 10]. Default: 5'
+    distance:
+      name: distance
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 'When using geolocation=geocodes, and latitude/longitude, this field specifies the radius in MILES from the geocode point. Default: 5'
+    geolocation:
+      name: geolocation
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Use the client''s IP address to limit results to the surrounding area. The possible options are: adminarea - Limit results to the client''s administrative area (state, province, etc.). locality - Limit results to the client''s locality (city). postalcode - Limit results to the postal code where the client''s IP address is registered. geocodes - Limit results to an area surrounding the lat/lon where the user''s IP address is registered. See also distance.'
+    include_only_administrative_area:
+      name: include_only_administrative_area
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Limit the results to only the administrative area provided. An administrative area is like a state in the United States, a province in Canada, or region in France. Please use the correct postal name for the administrative area (e.g. use "NSW" instead of "New South Wales").  Example: NSW'
+    include_only_locality:
+      name: include_only_locality
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Limit the results to only the locality provided. A locality is a significant population center (i.e. city, town, or village). Example: Paris'
+    include_only_postal_code:
+      name: include_only_postal_code
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Limit the results to only the postal code provided. When this parameter is used, no include_only_administrative_area and/or include_only_locality parameters can be used.  Example: 29200'
+    latitude:
+      name: latitude
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Limit the results to the surrounding area specified by latitude and longitude. See also distance  Example: -2.0234 This must be used with the longitude parameter.'
+    longitude:
+      name: longitude
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Limit the results to the surrounding area specified by latitude and longitude. See also distance  Example: 44.0234 This must be used with the latitude parameter.'
