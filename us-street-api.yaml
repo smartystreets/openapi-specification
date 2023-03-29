@@ -14,11 +14,18 @@ info:
     name: Smarty License
 servers:
   - url: us-street.api.smartystreets.com
+externalDocs:
+  description: "Extensive documentation for the US Street API"
+  url: https://www.smarty.com/docs/cloud/us-street-api
 paths:
   /street-address:
     get:
       summary: Single Address Validation
       tags: []
+      security:
+        - auth-id: []
+          auth-token: []
+        - embedded-key: []
       operationId: get-street-address
       responses:
         '200':
@@ -67,6 +74,10 @@ paths:
     post:
       summary: Multiple Address Validation
       operationId: post-street-address
+      security:
+        - auth-id: []
+          auth-token: []
+        - embedded-key: []
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulResponse'

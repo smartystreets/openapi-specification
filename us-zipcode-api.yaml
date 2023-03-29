@@ -116,14 +116,14 @@ components:
     Content-Type:
       name: Content-Type
       in: header
-      required: false
+      required: true
       schema:
         type: string
       description: 'The purpose of the Content-Type field is to describe the data contained in the body fully enough that the receiving user agent can pick an appropriate agent or mechanism to present the data to the user, or otherwise deal with the data in an appropriate manner. EX: Content-Type: application/json; charset=utf-8'
     Host:
       name: Host
       in: header
-      required: false
+      required: true
       schema:
         type: string
       description: 'The Host request header field specifies the internet host and port number of the resource being requested. EX: Host: us-zipcode.api.smartystreets.com'

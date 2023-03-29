@@ -4,6 +4,9 @@ info:
   description: |
     Utilize the SmartyStreets RESTful API if you want us to suggest some addresses to verify for you, you obviously still have the final say for what you end up verifying though. 
   termsOfService: 'https://smartystreets.com/legal/terms-of-service'
+  license:
+    url: 'https://www.smarty.com/legal/terms-of-service'
+    name: Smarty License
   contact:
     name: the Smarty Pit-Crew
     email: support@smartystreets.com
@@ -76,15 +79,15 @@ paths:
                 type: string
       description: ''
 security:
-  - auth_id: []
-    auth_token: []
-  - website_key: []
+  - auth-id: []
+    auth-token: []
+  - embedded-key: []
 tags:
   - name: street-address
     description: Search Street Addresses
 externalDocs:
-  description: Extensive documentation for the US-ZIPCode-API
-  url: 'https://smartystreets.com/docs/cloud/us-zipcode-api'
+  description: Extensive documentation for the US Autocomplete Pro API
+  url: https://www.smarty.com/docs/cloud/us-autocomplete-pro-api
 components:
   parameters:
     prefix:
@@ -122,7 +125,7 @@ components:
     Referer:
       name: Referer
       in: header
-      required: true
+      required: false
       schema:
         type: string
       description: 'The Referer is required when an embedded key is used for authentication. Its value is in the form of a URL, where the host component must match a host value assigned to your embedded key. Note: Some HTTP clients such as a browser or programming language HTTP libraries will add this header automatically. However some interfaces such as cURL do not, so you may need to add it manually. Ex: Referer: https://mycoolwebsite.com'
@@ -214,15 +217,15 @@ components:
           type: string
           example: ME
   securitySchemes:
-    auth_id:
+    auth-id:
       type: apiKey
       name: auth-id
       in: query
-    auth_token:
+    auth-token:
       type: apiKey
       name: auth-token
       in: query
-    website_key:
+    embedded-key:
       type: apiKey
       name: key
       in: query

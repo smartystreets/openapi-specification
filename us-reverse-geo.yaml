@@ -13,6 +13,9 @@ info:
     name: Smarty License
 servers:
   - url: us-reverse-geo.api.smartystreets.com
+externalDocs:
+  description: "Extensive documentation for the US Reverse Geocoding API"
+  url: https://www.smarty.com/docs/cloud/us-reverse-geo-api
 tags:
   - name: reverse-geo
     description: Operation invlovling reverse geocoding
