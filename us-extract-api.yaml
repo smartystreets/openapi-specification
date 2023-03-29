@@ -3,13 +3,20 @@ info:
   title: US-Extract-API
   description: |
     So you don't like playing 'Wheres Waldo' to find addresses in sentences, the SmartyStreets US-Extract RESTful API has your back. 
-  termsOfService: 'https://smartystreets.com/legal/terms-of-service'
+  termsOfService: 'https://www.smarty.com/legal/terms-of-service'
+  license:
+    url: 'https://www.smarty.com/legal/terms-of-service'
+    name: Smarty License
   contact:
-    name: the Smarty Pit-Crew
-    email: support@smartystreets.com
+    url: 'https://www.smarty.com/contact/support'
+    email: support@smarty.com
+    name: Smarty Support
   version: 3.1.11
 servers:
   - url: 'https://us-extract.api.smartystreets.com'
+externalDocs:
+  description: Extensive documentation for the US Extract API
+  url: https://www.smarty.com/docs/cloud/us-extract-api
 paths:
   /:
     post:
@@ -82,9 +89,6 @@ security:
 tags:
   - name: us-extract
     description: Find an address in a sentence
-externalDocs:
-  description: Extensive documentation for the US Extract API
-  url: https://www.smarty.com/docs/cloud/us-extract-api
 components:
   parameters:
     html:

@@ -7,6 +7,7 @@ info:
   contact:
     url: 'https://www.smarty.com/contact/support'
     email: support@smarty.com
+    name: Smarty Support
   termsOfService: 'https://www.smarty.com/legal/terms-of-service'
   license:
     url: 'https://www.smarty.com/legal/terms-of-service'

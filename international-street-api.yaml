@@ -8,8 +8,9 @@ info:
     url: 'https://www.smarty.com/legal/terms-of-service'
     name: Smarty License
   contact:
-    name: the Smarty Pit-Crew
-    email: support@smartystreets.com
+    url: 'https://www.smarty.com/contact/support'
+    email: support@smarty.com
+    name: Smarty Support
 servers:
   - url: 'https://international-autocomplete.api.smartystreets.com'
 externalDocs:

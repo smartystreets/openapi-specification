@@ -8,14 +8,19 @@ info:
     url: 'https://www.smarty.com/legal/terms-of-service'
     name: Smarty License
   contact:
-    name: the Smarty Pit-Crew
-    email: support@smartystreets.com
+    url: 'https://www.smarty.com/contact/support'
+    email: support@smarty.com
+    name: Smarty Support
   version: 3.2.8
 servers:
   - url: 'https://us-autocomplete.api.smartystreets.com'
+externalDocs:
+  description: Extensive documentation for the US Autocomplete Pro API
+  url: https://www.smarty.com/docs/cloud/us-autocomplete-pro-api
 paths:
   /suggest:
     get:
+      operationId: get-suggest
       tags:
         - suggest
       summary: For finding an address
@@ -85,9 +90,6 @@ security:
 tags:
   - name: street-address
     description: Search Street Addresses
-externalDocs:
-  description: Extensive documentation for the US Autocomplete Pro API
-  url: https://www.smarty.com/docs/cloud/us-autocomplete-pro-api
 components:
   parameters:
     prefix:
