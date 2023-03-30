@@ -8,7 +8,7 @@ info:
     url: 'https://www.smarty.com/legal/terms-of-service'
     name: Smarty License
   contact:
-    name: the Smarty Pit-Crew
+    name: Smarty Support
     email: support@smartystreets.com
 servers:
   - url: 'https://international-autocomplete.api.smartystreets.com'
@@ -18,7 +18,7 @@ externalDocs:
 paths:
   /lookup:
     get:
-      summary: Your GET endpoint
+      summary: Get Autocomplete Suggestions
       tags: []
       security:
         - auth-id: []

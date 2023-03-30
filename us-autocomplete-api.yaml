@@ -23,7 +23,7 @@ paths:
       operationId: get-suggest
       tags:
         - suggest
-      summary: For finding an address
+      summary: Get Address Suggestions and Verify
       parameters:
         - $ref: '#/components/parameters/prefix'
         - $ref: '#/components/parameters/Host'

@@ -23,7 +23,7 @@ tags:
 paths:
   /lookup:
     get:
-      summary: Get results of the reverse geocoding
+      summary: Convert Coordinates to Nearest Addresses
       tags:
         - reverse-geo
       responses:

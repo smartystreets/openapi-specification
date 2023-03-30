@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: International Address Autocomplete
+  title: International Address Verification API
   version: '3.3'
   description: ''
   termsOfService: 'https://smartystreets.com/legal/terms-of-service'
@@ -14,12 +14,12 @@ info:
 servers:
   - url: 'https://international-street.api.smartystreets.com'
 externalDocs:
-  description: Extensive documentation for the International Address Autocomplete API
+  description: Extensive documentation for the International Address API
   url: 'https://www.smarty.com/docs/cloud/international-street-api'
 paths:
   /verify:
     get:
-      summary: Your GET endpoint
+      summary: Submit Address to Verify
       tags: []
       security:
         - auth-id: []
