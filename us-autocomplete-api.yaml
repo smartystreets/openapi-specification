@@ -49,39 +49,14 @@ paths:
                 $ref: '#/components/schemas/200'
         '400':
           description: 'Bad Request (Malformed Payload): The request was malformed in some way and could not be parsed.'
-          content:
-            text/plain:
-              schema:
-                example: The request body of a POST requeset contained no lookups or contained malformed JSON.
-                type: string
         '401':
           description: 'Unauthorized: The embedded key was provided incorrectly or did not match any existing, active embedded keys. Or the host in the referer header did not match a host assigned to your embedded key.'
-          content:
-            text/plain:
-              schema:
-                example: 'The credentials were provided incorrectly or did not match any existing, active credentials.'
-                type: string
         '402':
           description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
-          content:
-            text/plain:
-              schema:
-                example: There is no active subscription for the account associated with the credentials submitted with the request.
-                type: string
         '422':
           description: 'Unprocessable Entity (Unsuitable parameters): Returns errors describing what needs to be corrected.'
-          content:
-            text/plain:
-              schema:
-                example: A GET request lacked required fields.
-                type: string
         '429':
           description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. You can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
-          content:
-            text/plain:
-              schema:
-                example: 'When using public "website key" authentication, we restrict the number of requests coming from a given source over too short of a time. If you use "website key" authentication, you can avoid this error by adding your IP address as an authorized host for the website key in question.'
-                type: string
       description: ''
 security:
   - auth-id: []
@@ -186,7 +161,7 @@ components:
       required: false
       schema:
         type: string
-      description: Used by UI components to request a list of secondaries (up to 100) for the specified address. See Secondary Number Expansion at smarty.com for usage information.
+      description: Used by UI components to request a list of secondaries (up to 100) for the specified address. See Secondary Number Expansion at Smarty.com for usage information.
     source:
       name: source
       in: query

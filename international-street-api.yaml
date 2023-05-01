@@ -415,44 +415,14 @@ components:
               $ref: '#/components/schemas/Root'
     '400':
       description: 'Bad Request (Malformed Payload): Inputs from the request could not be interpreted.'
-      content:
-        application/json:
-          schema:
-            properties:
-              id:
-                type: string
     '401':
       description: 'Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.'
-      content:
-        application/json:
-          schema:
-            properties:
-              id:
-                type: string
     '402':
       description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
-      content:
-        application/json:
-          schema:
-            properties:
-              id:
-                type: string
     '403':
       description: 'Forbidden: Because the international service is currently in a limited release phase, only approved accounts may access the service. Please contact us for your account to be granted access.'
-      content:
-        application/json:
-          schema:
-            properties:
-              id:
-                type: string
     '422':
       description: 'Unprocessable Entity: A GET request lacked required fields.'
-      content:
-        application/json:
-          schema:
-            properties:
-              id:
-                type: string
     '429':
       description: |-
         Too Many Requests: Too many requests with exactly the same input values were submitted within too short a period. This status code conveys that the input was not processed in order to prevent runaway charges caused by such conditions as a misbehaving (infinite) loop sending the same record over and over to the API. You're welcome.
@@ -460,20 +430,8 @@ components:
         OR
 
         Too Many Requests: When using public "embedded key" authentication, we restrict the number of requests coming from a given source over too short of a time. If you use embedded key authentication, you can avoid this error by adding your IP address as an authorized host for the embedded key in question.
-      content:
-        application/json:
-          schema:
-            properties:
-              id:
-                type: string
     '504':
       description: 'Gateway Timeout: Our own upstream data provider did not respond in a timely fashion and the request failed. A serious, yet rare occurrence indeed.'
-      content:
-        application/json:
-          schema:
-            properties:
-              id:
-                type: string
   parameters:
     Host:
       name: Host

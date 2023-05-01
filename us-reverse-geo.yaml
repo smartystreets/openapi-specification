@@ -51,7 +51,7 @@ paths:
           in: query
           name: longitude
           description: longitudinal coordinate to begin search
-      description: This api runs Smarty's reverse geocoding algorithms to convert latitudinal and longitudinal coordinates into the closest street addresses at lightning speed! Enter your auth-id and auth-token or just a smarty embedded-key along with your coordinates and you are off!
+      description: This api runs Smarty's reverse geocoding algorithms to convert latitudinal and longitudinal coordinates into the closest street addresses at lightning speed! Enter your auth-id and auth-token or just a Smarty embedded-key along with your coordinates and you are off!
       security:
         - auth-id: []
           auth-token: []
@@ -178,13 +178,13 @@ components:
             properties:
               auth-id:
                 type: string
-                description: Auth-id generated in your smarty account
+                description: Auth-id generated in your Smarty account
               auth-token:
                 type: string
-                description: Auth-token generated in your smarty account
+                description: Auth-token generated in your Smarty account
               key:
                 type: string
-                description: Embedded key generated in your smarty account
+                description: Embedded key generated in your Smarty account
               latitude:
                 type: number
                 description: latitudinal coordinates to begin search
