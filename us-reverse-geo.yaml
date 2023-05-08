@@ -1,0 +1,218 @@
+openapi: 3.1.0
+info:
+  title: us-reverse-geo
+  version: '0.23'
+  summary: 'Converts latitudinal and longitudinal coordinates into the nearest street addresses '
+  description: This api runs Smarty's reverse geocoding algorithms to convert latitudinal and longitudinal coordinates into the closest street addresses at lightning speed!
+  contact:
+    url: 'https://www.smarty.com/contact/support'
+    email: support@smarty.com
+    name: Smarty Support
+  termsOfService: 'https://www.smarty.com/legal/terms-of-service'
+  license:
+    url: 'https://www.smarty.com/legal/terms-of-service'
+    name: Smarty License
+servers:
+  - url: us-reverse-geo.api.smartystreets.com
+externalDocs:
+  description: "Extensive documentation for the US Reverse Geocoding API"
+  url: https://www.smarty.com/docs/cloud/us-reverse-geo-api
+tags:
+  - name: reverse-geo
+    description: Operation invlovling reverse geocoding
+paths:
+  /lookup:
+    get:
+      summary: Convert Coordinates to Nearest Addresses
+      tags:
+        - reverse-geo
+      responses:
+        '200':
+          $ref: '#/components/responses/ReverseGeoValidResponse'
+        '400':
+          description: 'Bad Request, The request body was blank or otherwise malformed.'
+        '401':
+          description: 'Unauthorized, The credentials were provided incorrectly or did not match any existing, active credentials.'
+        '402':
+          description: 'Payment Required, There is no active subscription for the account associated with the credentials submitted with the request.'
+        '422':
+          description: 'Unprocessable Entity (Unsuitable Parameters), Returns errors describing what needs to be corrected.'
+        '429':
+          description: 'Too Many Requests, When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. If you use embedded key authentication, you can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
+      operationId: get-street-address
+      parameters:
+        - schema:
+            type: number
+          in: query
+          name: latitude
+          description: latitudinal coordinate to begin search
+        - schema:
+            type: number
+          in: query
+          name: longitude
+          description: longitudinal coordinate to begin search
+      description: This api runs Smarty's reverse geocoding algorithms to convert latitudinal and longitudinal coordinates into the closest street addresses at lightning speed! Enter your auth-id and auth-token or just a Smarty embedded-key along with your coordinates and you are off!
+      security:
+        - auth-id: []
+          auth-token: []
+        - embedded-key: []
+      requestBody:
+        $ref: '#/components/requestBodies/ReverseGeoRequest'
+    parameters: []
+components:
+  schemas:
+    Address:
+      type: object
+      examples:
+        - street: 2335 S State St
+          city: Provo
+          state_abbreviation: UT
+          zipcode: '84606'
+      title: Address
+      description: Object containing basic address information
+      properties:
+        street:
+          type: string
+          description: varchar(64) The street name of this address.
+        city:
+          type: string
+          description: varchar(64) The city name of this address.
+        state_abbreviation:
+          type: string
+          description: varchar(2) The state abbreviation of this address.
+        zipcode:
+          type: string
+          description: varchar(5) The 5-digit ZIP Code of this address.
+      required:
+        - street
+        - city
+        - state_abbreviation
+        - zipcode
+    Coordinate:
+      type: object
+      examples:
+        - latitude: 40.202583
+          longitude: -111.62196
+          accuracy: Rooftop
+          license: 1
+      title: Coordinate
+      description: Object containing basic coordinate information
+      properties:
+        latitude:
+          type: number
+          description: |-
+            Type: Decimal
+
+            Info: The latitude value of this address.
+        longitude:
+          type: number
+          description: |-
+            Type: Decimal
+
+            Info: The longitude value of this address.
+        accuracy:
+          type: string
+          description: |-
+            Type: varchar(18)
+
+            Info: Indicates the accuracy of the latitude and longitude values. 
+
+            Unknown — Coordinates not known. Reasons could include: lat/lon coordinates not available.
+            Zip5 — Accurate to a 5-digit ZIP Code level (least accurate)
+            Zip6 — Accurate to a 6-digit ZIP Code level
+            Zip7 — Accurate to a 7-digit ZIP Code level
+            Zip8 — Accurate to an 8-digit ZIP Code level
+            Zip9 — Accurate to a 9-digit ZIP Code level
+            Parcel — Accurate to the centroid of a property parcel.
+            Rooftop — Accurate to the rooftop of a structure for this address.
+
+            Note: Concerning addresses for which the ZIP9 accuracy is not available, the ZIP# accuracy is interpolated based on neighboring addresses. Thus, ZIP7 is an average of all the lat/long coordinates of nearby ZIP Codes that share those first 7 digits.
+        license:
+          type: integer
+          description: |-
+            Type: int
+
+            Info: The license ID for the geographic coordinate returned. See the licensing table at https://www.smarty.com/docs/cloud/us-reverse-geo-api for more details
+      required:
+        - latitude
+        - longitude
+        - license
+    Result:
+      title: Result
+      type: object
+      properties:
+        distance:
+          type: number
+          description: The distance in meters of this address to the input latitude/longitude values.
+        address:
+          $ref: '#/components/schemas/Address'
+          description: Address object containing basic address information
+        coordinate:
+          $ref: '#/components/schemas/Coordinate'
+          description: Coordinate object containing basic coordinate information
+      required:
+        - address
+        - coordinate
+  securitySchemes:
+    auth-id:
+      name: auth-id
+      type: apiKey
+      in: query
+      description: URL-encoded ID generated with an associated token in the users Smarty account
+    auth-token:
+      name: auth-token
+      type: apiKey
+      in: query
+      description: Authentication token generated with an associated URL-encoded ID in the users Smarty account
+    embedded-key:
+      name: key
+      type: apiKey
+      in: query
+      description: Embedded key are associated with one or more hostnames and/or IP addresses which you specify. Each of the hostnames (indicated by the 'Referer' header or 'Origin' header) will be granted rate-limited permission to call the API with the associated embedded key.
+  requestBodies:
+    ReverseGeoRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              auth-id:
+                type: string
+                description: Auth-id generated in your Smarty account
+              auth-token:
+                type: string
+                description: Auth-token generated in your Smarty account
+              key:
+                type: string
+                description: Embedded key generated in your Smarty account
+              latitude:
+                type: number
+                description: latitudinal coordinates to begin search
+              longitude:
+                type: number
+                description: longitudinal coordinates to begin search
+            required:
+              - latitude
+              - longitude
+          examples:
+            Example:
+              value:
+                auth-id: YOUR+AUTH-ID+HERE
+                auth-token: YOUR+AUTH-TOKEN+HERE
+                key: OR+YOUR+EMBEDDED-KEY+HERE
+                latitude: 40.202583
+                longitude: -111.62196
+      description: Request with required information to submit a reverse geocoding api call
+  responses:
+    ReverseGeoValidResponse:
+      description: 'Valid reverse geocoding response containing the results of the search. Each object in the results list will contain an Address object, Coordinate object, and an optional distance field. The distance field is left blank where there is an exact match.'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              results:
+                $ref: '#/components/schemas/Result'
+                description: 'The array of result objects. Each object contains a coordinate object, a distance, and an address object.'
+            required:
+              - results

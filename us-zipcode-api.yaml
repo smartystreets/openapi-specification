@@ -1,0 +1,289 @@
+openapi: 3.1.0
+info:
+  title: US-ZIPCode-API
+  description: |
+    Utilize the SmartyStreets RESTful API to search for a ZIPCode or City/State combo and access more relevant information than you could possibly need. 
+  termsOfService: 'https://smartystreets.com/legal/terms-of-service'
+  contact:
+    url: 'https://www.smarty.com/contact/support'
+    email: support@smarty.com
+    name: Smarty Support
+  license:
+    url: 'https://www.smarty.com/legal/terms-of-service'
+    name: Smarty License
+  version: 4.1.3
+servers:
+  - url: 'https://us-zipcode.api.smartystreets.com'
+externalDocs:
+  description: Extensive documentation for the US-ZIPCode-API
+  url: 'https://smartystreets.com/docs/cloud/us-zipcode-api'
+paths:
+  /lookup:
+    get:
+      tags:
+        - lookup
+      summary: Search for a single ZIP Code
+      operationId: lookup-get
+      description: "To send one (and only one) input to the API, simply encode the field names from the table below along with their corresponding values as query string parameters in the URL of your request. Here's an example that uses the city, state, and zipcode fields:\n\ncurl -v 'https://us-zipcode.api.smartystreets.com/lookup?\n\tauth-id=YOUR+AUTH-ID+HERE&\n\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\tcity=mountain+view&\n\tstate=CA&\n\tzipcode=94035'\nPlease note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.\n"
+      parameters:
+        - $ref: '#/components/parameters/city'
+        - $ref: '#/components/parameters/state'
+        - $ref: '#/components/parameters/zipcode'
+        - $ref: '#/components/parameters/input_id'
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/Host'
+      responses:
+        '200':
+          description: 'OK(success!), The response body will be a JSON array containing zero or more matches for the input provided with the request. The structure of the response is the same for both GET and POST requests.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '413':
+          $ref: '#/components/responses/413'
+        '429':
+          $ref: '#/components/responses/429'
+    post:
+      tags:
+        - lookup
+      summary: Search for a batch of ZIPCodes
+      operationId: lookup-post
+      description: "HTTP POST: Multiple Inputs\n\nA POST request allows a larger volume of data (MAX: 100 inputs or 16K per request) to be sent in the HTTP request body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with three inputs being sent:\n\ncurl -v 'https://us-zipcode.api.smartystreets.com/lookup?\n\t\t\tauth-id=YOUR+AUTH-ID+HERE&\n\t\t\tauth-token=YOUR+AUTH-TOKEN+HERE'\n\t-H \"Content-Type: application/json; charset=utf-8\"\n\t--data-binary '\n\t[\n\t\t{\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\"\n\t\t},\n\t\t{\n\t\t\t\"zipcode\":\"12345\"\n\t\t},\n\t\t{\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\"\n\t\t}\n\t]'\nNote: When POSTing JSON, always make sure to add a Content-Type of application/json; charset=utf-8."
+      requestBody:
+        description: Data should be encoded as a `JSON` array where each element in the array is a `JSON` object with field names identical to those in the provided examples.
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/LookupManyArray'
+        required: true
+      responses:
+        '200':
+          description: 'OK (success!): The response body will be a JSON array containing zero or more matches for the input provided with the request. The structure of the response is the same for both GET and POST requests.'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/200'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '402':
+          $ref: '#/components/responses/402'
+        '413':
+          $ref: '#/components/responses/413'
+        '429':
+          $ref: '#/components/responses/429'
+      parameters:
+        - $ref: '#/components/parameters/Content-Type'
+        - $ref: '#/components/parameters/Host'
+security:
+  - auth_id: []
+    auth_token: []
+  - website_key: []
+tags:
+  - name: lookup
+    description: Search City/States or ZIPCodes
+components:
+  parameters:
+    city:
+      name: city
+      in: query
+      description: '**City** *Example: Provo* Must be paired with ''state'' if no ZIPCode is provided.'
+      schema:
+        type: string
+    state:
+      name: state
+      in: query
+      description: '**State** *Example: UT* State name or two-letter abbreviation. Must be paired with ''city'' if no ZIPCode is provided.'
+      schema:
+        type: string
+    zipcode:
+      name: zipcode
+      in: query
+      description: '**Zip code** *Example: 84604* The ZIP Code.'
+      schema:
+        type: string
+    input_id:
+      name: input_id
+      in: query
+      example: 867-5309
+      description: '**Input ID** *Example: 867-5309* A unique identifier for this address used in your application; this field will be copied to the output'
+      schema:
+        type: string
+    Content-Type:
+      name: Content-Type
+      in: header
+      required: true
+      schema:
+        type: string
+      description: 'The purpose of the Content-Type field is to describe the data contained in the body fully enough that the receiving user agent can pick an appropriate agent or mechanism to present the data to the user, or otherwise deal with the data in an appropriate manner. EX: Content-Type: application/json; charset=utf-8'
+    Host:
+      name: Host
+      in: header
+      required: true
+      schema:
+        type: string
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. EX: Host: us-zipcode.api.smartystreets.com'
+  schemas:
+    '200':
+      title: Successful response
+      type: object
+      description: 'OK (success!): The response body will be a JSON array containing zero or more matches for the input provided with the request. The structure of the response is the same for both GET and POST requests.'
+      properties:
+        input_index:
+          type: integer
+        input_id:
+          type: string
+          description: A unique identifier for this address used in your application; this field will be copied into the output.
+        city_states:
+          type: array
+          description: A list of cities and their states that match the input
+          items:
+            $ref: '#/components/schemas/CityStates'
+        zipcodes:
+          type: array
+          description: A list of ZIP Codes that match the input
+          items:
+            $ref: '#/components/schemas/ZIPCodes'
+        status:
+          type: string
+          description: 'For a lookup with no matches, status classifies the kind of failure and always comes with a reason'
+        reason:
+          type: string
+          description: "For a lookup with no matches, reason explains why the lookup failed\n\nblank\tBlank lookup (you must provide a ZIP Code and/or City/State combination).\ninvalid_state\tInvalid State name or abbreviation.\ninvalid_city\tInvalid City for the given State.\ninvalid_zipcode\tInvalid ZIP Code.\nconflict\tConflicting ZIP Code/City/State information."
+    CityStates:
+      title: CityStates
+      type: object
+      properties:
+        city:
+          type: string
+          example: Provo
+          description: The name of a city
+        state_abbreviation:
+          type: string
+          example: UT
+          description: 'The official, two-letter state abbreviation'
+        state:
+          type: string
+          example: Utah
+          description: The state name
+        mailable_city:
+          type: boolean
+          description: A boolean value indicating whether or not the city name is an approved USPS mailing name
+    ZIPCodes:
+      title: ZIPCodes
+      type: object
+      properties:
+        zipcode:
+          type: string
+          example: '84604'
+          description: The 5 digit ZIP code
+        zipcode_type:
+          type: string
+          example: S
+          description: |-
+            The type of ZIP Code. Possible values:
+            S - Standard (regular ZIP Code)
+            M - Military (APO/FPO military ZIP Code. Also includes DPO - Diplomatic addresses)
+            P - P.O. Box (serves only post-office boxes)
+            U - Unique (belongs primarily to a firm)
+        default_city:
+          type: string
+          example: Provo
+          description: A string containing the default city name for this ZIP Code
+        county_fips:
+          type: string
+          example: '49049'
+          description: The county FIPS Code
+        county_name:
+          type: string
+          example: Utah
+          description: |-
+            The name of the county in which the ZIP Code is located
+
+            Note: The county name listed here pertains to the 5-digit ZIP Code, not necessarily the city.
+        state_abbreviation:
+          type: string
+          example: UT
+          description: 'The official, two-letter state abbreviation'
+        state:
+          type: string
+          example: Utah
+          description: The state name
+        latitude:
+          type: number
+          example: 40.26763
+          description: The approximate latitude geo-coordinate
+        longitude:
+          type: number
+          example: -111.65763
+          description: The approximate longitude geo-coordinate
+        precision:
+          type: string
+          example: Zip5
+          description: |-
+            Indicates the precision of the latitude and longitude values. 
+
+            None — Coordinates not known. Reasons could include: address is invalid, military address (APO or FPO), lat/lon coordinates not available.
+            Zip5 — Accurate to a 5-digit ZIP Code level (least precise)
+            Zip6 — Accurate to a 6-digit ZIP Code level
+            Zip7 — Accurate to a 7-digit ZIP Code level
+            Zip8 — Accurate to an 8-digit ZIP Code level
+            Zip9 — Accurate to a 9-digit ZIP Code level (most precise but NOT rooftop level)
+        alternate_counties:
+          type: array
+          description: 'The county FIPS codes, county names, state abbreviations, and states, that share the same ZIP Code. Note: The county names listed here pertain to the 5-digit ZIP Code, not necessarily the city.'
+          items:
+            $ref: '#/components/schemas/AlternateCounties'
+    AlternateCounties:
+      title: AlternateCounties
+      type: object
+      properties:
+        county_fips:
+          type: string
+          example: '49051'
+          description: The county FIPS Code
+        state_abbreviation:
+          type: string
+          example: UT
+          description: 'The official, two-letter state abbreviation'
+        state:
+          type: string
+          example: Utah
+          description: The state name
+      description: |
+        The county FIPS codes, county names, state abbreviations, and states, that share the same ZIP Code. Note: The county names listed here pertain to the 5-digit ZIP Code, not necessarily the city.
+    LookupManyArray:
+      type: string
+  securitySchemes:
+    auth_id:
+      type: apiKey
+      name: auth-id
+      in: query
+    auth_token:
+      type: apiKey
+      name: auth-token
+      in: query
+    website_key:
+      type: apiKey
+      name: key
+      in: query
+  responses:
+    '400':
+      description: 'Bad Request (Malformed Payload): The request body of a POST request contained no lookups or contained malformed JSON.'
+    '401':
+      description: 'Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.'
+    '402':
+      description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
+    '413':
+      description: 'Request Entity Too Large: The maximum size for a request body to this API is 16K (16,384 bytes).'
+    '429':
+      description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. If you use embedded key authentication, you can avoid this error by adding your IP address as an authorized host for the embedded key in question.'

@@ -1,0 +1,208 @@
+openapi: 3.0.1
+info:
+  title: US-Autocomplete-API
+  description: |
+    Utilize the SmartyStreets RESTful API if you want us to suggest some addresses to verify for you, you obviously still have the final say for what you end up verifying though. 
+  termsOfService: 'https://smartystreets.com/legal/terms-of-service'
+  license:
+    url: 'https://www.smarty.com/legal/terms-of-service'
+    name: Smarty License
+  contact:
+    url: 'https://www.smarty.com/contact/support'
+    email: support@smarty.com
+    name: Smarty Support
+  version: 3.2.8
+servers:
+  - url: 'https://us-autocomplete.api.smartystreets.com'
+externalDocs:
+  description: Extensive documentation for the US Autocomplete Pro API
+  url: https://www.smarty.com/docs/cloud/us-autocomplete-pro-api
+paths:
+  /suggest:
+    get:
+      operationId: get-suggest
+      tags:
+        - suggest
+      summary: Get Address Suggestions and Verify
+      parameters:
+        - $ref: '#/components/parameters/prefix'
+        - $ref: '#/components/parameters/Host'
+        - $ref: '#/components/parameters/Referer'
+        - $ref: '#/components/parameters/max_results'
+        - $ref: '#/components/parameters/include_only_cities'
+        - $ref: '#/components/parameters/include_only_states'
+        - $ref: '#/components/parameters/include_only_zip_codes'
+        - $ref: '#/components/parameters/exclude_states'
+        - $ref: '#/components/parameters/prefer_cities'
+        - $ref: '#/components/parameters/prefer_states'
+        - $ref: '#/components/parameters/prefer_zip_codes'
+        - $ref: '#/components/parameters/prefer_ratio'
+        - $ref: '#/components/parameters/prefer_geolocation'
+        - $ref: '#/components/parameters/selected'
+        - $ref: '#/components/parameters/source'
+      responses:
+        '200':
+          description: 'OK (success!): The response body is a JSON object with a suggestions array containing suggestions based on the supplied input parameters.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/200'
+        '400':
+          description: 'Bad Request (Malformed Payload): The request was malformed in some way and could not be parsed.'
+        '401':
+          description: 'Unauthorized: The embedded key was provided incorrectly or did not match any existing, active embedded keys. Or the host in the referer header did not match a host assigned to your embedded key.'
+        '402':
+          description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
+        '422':
+          description: 'Unprocessable Entity (Unsuitable parameters): Returns errors describing what needs to be corrected.'
+        '429':
+          description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. You can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
+      description: ''
+security:
+  - auth-id: []
+    auth-token: []
+  - embedded-key: []
+tags:
+  - name: street-address
+    description: Search Street Addresses
+components:
+  parameters:
+    prefix:
+      name: search
+      in: query
+      description: '*Example: 123 mai* The part of the address that has alread been typed. Maximum length is 128 bytes.'
+      schema:
+        type: string
+      required: true
+    include_only_cities:
+      name: include_only_cities
+      in: query
+      description: 'Limit the results to only those cities and states listed, as well as those in include_only_states. Example: DENVER,AURORA,CO;OMAHA,NE '
+      schema:
+        type: string
+    include_only_states:
+      name: include_only_states
+      in: query
+      description: 'Limit the results to only those states listed, as well as those listed in include_only_cities. Examples: UT;ID;MT or CONTIGUOUS or ALLSTATES'
+      schema:
+        type: string
+    prefer_ratio:
+      name: prefer_ratio
+      in: query
+      description: 'Specifies the percentage of address suggestions that should be preferred and will appear at the top of the suggestion list. Expressed as an integer value, range [0, 100]. Default: 100'
+      schema:
+        type: integer
+    Host:
+      name: Host
+      in: header
+      required: true
+      schema:
+        type: string
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Note: Most HTTP clients such as the browser, or programming language HTTP libraries will add this header automatically. Ex: Host: us-autocomplete-pro.api.smartystreets.com'
+    Referer:
+      name: Referer
+      in: header
+      required: false
+      schema:
+        type: string
+      description: 'The Referer is required when an embedded key is used for authentication. Its value is in the form of a URL, where the host component must match a host value assigned to your embedded key. Note: Some HTTP clients such as a browser or programming language HTTP libraries will add this header automatically. However some interfaces such as cURL do not, so you may need to add it manually. Ex: Referer: https://mycoolwebsite.com'
+    max_results:
+      name: max_results
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 'Maximum number of address suggestions to return; range [1, 10]. Default Value: 10'
+    include_only_zip_codes:
+      name: include_only_zip_codes
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Limit the results to only those ZIP Codes listed. When this parameter is used, no other _cities, _states parameters can be used.  Note: When using this parameter, the prefer_geolocation parameter must NOT be set to city.  Example: 90210;06504'
+    exclude_states:
+      name: exclude_states
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Exclude the following states from the results. When this parameter is used, no other include_ parameters may be used.  Note: The prefer_geolocation parameter MUST be set to none if the customer''s current location is in a state specified in this parameter; otherwise the customer will see addresses from their current location.  Example: SD;ND;MT'
+    prefer_cities:
+      name: prefer_cities
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Display suggestions with the listed cities and states at the top of the suggestion list, as well as those listed in prefer_states. Example: DENVER,AURORA,CO;OMAHA,NE'
+    prefer_states:
+      name: prefer_states
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Display suggestions with the listed states at the top of the suggestion list, as well as those listed in prefer_cities. Examples: UT;ID;MT '
+    prefer_zip_codes:
+      name: prefer_zip_codes
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'Display suggestions with the listed ZIP Codes at the top of the suggestion list. When this parameter is used, no other _cities or _states parameters can be used.  Note: When using this parameter, the prefer_geolocation parameter must NOT be set to city. '
+    prefer_geolocation:
+      name: prefer_geolocation
+      in: query
+      required: false
+      schema:
+        type: string
+      description: 'If omitted or set to city, it uses the sender''s IP address (IPv4 only) to determine location, then automatically adds the city and state to the prefer_cities value. This parameter takes precedence over other _include or _exclude parameters meaning that if it is not set to none, you may see addresses from the customer''s area when you may not desire it.  Acceptable values are: empty string (which defaults to city), none, or city.  Notes:  1. If any _zip_codes parameters are used, this parameter must NOT be set to city)  2. If the request to the Autocomplete Pro API goes through a proxy, you will need to set an X-Forwarded-For header specifying the user''s IP address. Default: city'
+    selected:
+      name: selected
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Used by UI components to request a list of secondaries (up to 100) for the specified address. See Secondary Number Expansion at Smarty.com for usage information.
+    source:
+      name: source
+      in: query
+      schema:
+        type: string
+      description: 'Include results from alternate data sources. Allowed values are: all - will include non-postal addresses in the results postal - will limit the results to postal addresses only  If this parameter is used, an additional field named source will be returned for each result, which is either postal for postal addresses, or other if the address is from an alternate data source. Default: postal'
+  schemas:
+    '200':
+      title: Successful response
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Suggestions'
+    Suggestions:
+      title: Suggestions
+      type: object
+      properties:
+        text:
+          type: string
+          example: '123 Main Rd, Abbot ME'
+        street_line:
+          type: string
+          example: 123 Main Rd
+        city:
+          type: string
+          example: Abbot
+        state:
+          type: string
+          example: ME
+  securitySchemes:
+    auth-id:
+      type: apiKey
+      name: auth-id
+      in: query
+    auth-token:
+      type: apiKey
+      name: auth-token
+      in: query
+    embedded-key:
+      type: apiKey
+      name: key
+      in: query
