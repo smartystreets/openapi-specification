@@ -13,7 +13,7 @@ info:
     name: Smarty Support
   version: 3.2.8
 servers:
-  - url: 'https://us-autocomplete.api.smartystreets.com'
+  - url: 'https://us-autocomplete.api.smarty.com'
 externalDocs:
   description: Extensive documentation for the US Autocomplete Pro API
   url: https://www.smarty.com/docs/cloud/us-autocomplete-pro-api
@@ -98,7 +98,7 @@ components:
       required: true
       schema:
         type: string
-      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Note: Most HTTP clients such as the browser, or programming language HTTP libraries will add this header automatically. Ex: Host: us-autocomplete-pro.api.smartystreets.com'
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Note: Most HTTP clients such as the browser, or programming language HTTP libraries will add this header automatically. Ex: Host: us-autocomplete-pro.api.smarty.com'
     Referer:
       name: Referer
       in: header

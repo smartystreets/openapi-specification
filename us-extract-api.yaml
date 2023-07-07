@@ -13,7 +13,7 @@ info:
     name: Smarty Support
   version: '3.15'
 servers:
-  - url: 'https://us-extract.api.smartystreets.com'
+  - url: 'https://us-extract.api.smarty.com'
 externalDocs:
   description: Extensive documentation for the US Extract API
   url: https://www.smarty.com/docs/cloud/us-extract-api
@@ -114,7 +114,7 @@ components:
       required: false
       schema:
         type: string
-      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Ex: Host: us-extract.api.smartystreets.com'
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Ex: Host: us-extract.api.smarty.com'
   schemas:
     '200':
       title: Successful response

@@ -13,7 +13,7 @@ info:
     url: 'https://www.smarty.com/legal/terms-of-service'
     name: Smarty License
 servers:
-  - url: us-street.api.smartystreets.com
+  - url: us-street.api.smarty.com
 externalDocs:
   description: "Extensive documentation for the US Street API"
   url: https://www.smarty.com/docs/cloud/us-street-api
@@ -41,7 +41,7 @@ paths:
       description: |
         To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the street, city, state, and candidates fields (line breaks added for readability):
 
-        curl -v 'https://us-street.api.smartystreets.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&street=1600+amphitheatre+pkwy&city=mountain+view&state=CA&candidates=10'
+        curl -v 'https://us-street.api.smarty.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&street=1600+amphitheatre+pkwy&city=mountain+view&state=CA&candidates=10'
 
         Please note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.
       parameters:
@@ -54,7 +54,7 @@ paths:
           required: true
         - schema:
             type: string
-            example: 'Host: us-street.api.smartystreets.com'
+            example: 'Host: us-street.api.smarty.com'
           in: header
           name: Host
           description: 'The Host request header field specifies the internet host of the resource being requested. Optionally, it can also specify a non-default port number.'
@@ -81,7 +81,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulResponse'
-      description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smartystreets.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&' -H \"Content-Type: application/json; charset=utf-8\"\n--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'"
+      description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smarty.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&' -H \"Content-Type: application/json; charset=utf-8\"\n--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'"
       parameters:
         - schema:
             type: string
@@ -92,7 +92,7 @@ paths:
           description: 'The purpose of the Content-Type field is to describe the data contained in the body fully enough that the receiving user agent can pick an appropriate agent or mechanism to present the data to the user, or otherwise deal with the data in an appropriate manner.'
         - schema:
             type: string
-            example: 'Host: us-street.api.smartystreets.com'
+            example: 'Host: us-street.api.smarty.com'
           in: header
           required: true
           name: Host
@@ -726,7 +726,7 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/RequestObject'
-      description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smartystreets.com/street-address?\n\t\tauth-id=YOUR+AUTH-ID+HERE&\n\t\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\t\tlicense=YOUR+LICENSE+HERE&'\n\t-H \"Content-Type: application/json; charset=utf-8\"\n\t--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'\n"
+      description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smarty.com/street-address?\n\t\tauth-id=YOUR+AUTH-ID+HERE&\n\t\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\t\tlicense=YOUR+LICENSE+HERE&'\n\t-H \"Content-Type: application/json; charset=utf-8\"\n\t--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'\n"
   responses:
     SuccessfulResponse:
       description: 'OK (success!): A JSON array containing zero or more address matches for the input provided with the request. If none of the submitted addresses validate, the array will be empty ([]). The structure of the response is the same for both GET and POST requests.'

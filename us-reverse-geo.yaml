@@ -13,7 +13,7 @@ info:
     url: 'https://www.smarty.com/legal/terms-of-service'
     name: Smarty License
 servers:
-  - url: us-reverse-geo.api.smartystreets.com
+  - url: us-reverse-geo.api.smarty.com
 externalDocs:
   description: "Extensive documentation for the US Reverse Geocoding API"
   url: https://www.smarty.com/docs/cloud/us-reverse-geo-api

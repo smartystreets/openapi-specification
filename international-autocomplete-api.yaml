@@ -11,7 +11,7 @@ info:
     name: Smarty Support
     email: support@smartystreets.com
 servers:
-  - url: 'https://international-autocomplete.api.smartystreets.com'
+  - url: 'https://international-autocomplete.api.smarty.com'
 externalDocs:
   description: Extensive documentation for the International Address Autocomplete API
   url: 'https://www.smarty.com/docs/cloud/international-address-autocomplete-api'
@@ -107,7 +107,7 @@ components:
       required: true
       schema:
         type: string
-      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Note: Most HTTP clients such as the browser, or programming language HTTP libraries will add this header automatically. Ex: Host: us-autocomplete-pro.api.smartystreets.com'
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Note: Most HTTP clients such as the browser, or programming language HTTP libraries will add this header automatically. Ex: Host: us-autocomplete-pro.api.smarty.com'
     Referer:
       name: Referer
       in: header

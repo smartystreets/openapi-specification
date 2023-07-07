@@ -12,7 +12,7 @@ info:
     email: support@smarty.com
     name: Smarty Support
 servers:
-  - url: 'https://international-street.api.smartystreets.com'
+  - url: 'https://international-street.api.smarty.com'
 externalDocs:
   description: Extensive documentation for the International Address API
   url: 'https://www.smarty.com/docs/cloud/international-street-api'
@@ -43,7 +43,7 @@ paths:
         '504':
           $ref: '#/components/responses/504'
       operationId: get-verify
-      description: "To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the address1, address2, locality, administrative_area, postal_code, and country fields:\n\ncurl -v 'https://international-street.api.smartystreets.com/verify?\n\tauth-id=YOUR+AUTH-ID+HERE&\n\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\n\taddress1=Rua+Padre+Antonio+D%27Angelo+121&\n\taddress2=Casa+Verde&\n\tlocality=Sao+Paulo&\n\tadministrative_area=SP&\n\tpostal_code=02516-040&\n\tcountry=Brazil'\n\t\nPlease note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.\n\n"
+      description: "To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the address1, address2, locality, administrative_area, postal_code, and country fields:\n\ncurl -v 'https://international-street.api.smarty.com/verify?\n\tauth-id=YOUR+AUTH-ID+HERE&\n\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\n\taddress1=Rua+Padre+Antonio+D%27Angelo+121&\n\taddress2=Casa+Verde&\n\tlocality=Sao+Paulo&\n\tadministrative_area=SP&\n\tpostal_code=02516-040&\n\tcountry=Brazil'\n\t\nPlease note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.\n\n"
       parameters:
         - $ref: '#/components/parameters/Host'
         - $ref: '#/components/parameters/input_id'
@@ -439,7 +439,7 @@ components:
       required: true
       schema:
         type: string
-      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Ex: Host: international-street.api.smartystreets.com'
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. Ex: Host: international-street.api.smarty.com'
     input_id:
       name: input_id
       in: query

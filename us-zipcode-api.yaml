@@ -13,7 +13,7 @@ info:
     name: Smarty License
   version: 4.1.3
 servers:
-  - url: 'https://us-zipcode.api.smartystreets.com'
+  - url: 'https://us-zipcode.api.smarty.com'
 externalDocs:
   description: Extensive documentation for the US-ZIPCode-API
   url: 'https://smartystreets.com/docs/cloud/us-zipcode-api'
@@ -24,7 +24,7 @@ paths:
         - lookup
       summary: Search for a single ZIP Code
       operationId: lookup-get
-      description: "To send one (and only one) input to the API, simply encode the field names from the table below along with their corresponding values as query string parameters in the URL of your request. Here's an example that uses the city, state, and zipcode fields:\n\ncurl -v 'https://us-zipcode.api.smartystreets.com/lookup?\n\tauth-id=YOUR+AUTH-ID+HERE&\n\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\tcity=mountain+view&\n\tstate=CA&\n\tzipcode=94035'\nPlease note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.\n"
+      description: "To send one (and only one) input to the API, simply encode the field names from the table below along with their corresponding values as query string parameters in the URL of your request. Here's an example that uses the city, state, and zipcode fields:\n\ncurl -v 'https://us-zipcode.api.smarty.com/lookup?\n\tauth-id=YOUR+AUTH-ID+HERE&\n\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\tcity=mountain+view&\n\tstate=CA&\n\tzipcode=94035'\nPlease note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.\n"
       parameters:
         - $ref: '#/components/parameters/city'
         - $ref: '#/components/parameters/state'
@@ -54,7 +54,7 @@ paths:
         - lookup
       summary: Search for a batch of ZIPCodes
       operationId: lookup-post
-      description: "HTTP POST: Multiple Inputs\n\nA POST request allows a larger volume of data (MAX: 100 inputs or 16K per request) to be sent in the HTTP request body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with three inputs being sent:\n\ncurl -v 'https://us-zipcode.api.smartystreets.com/lookup?\n\t\t\tauth-id=YOUR+AUTH-ID+HERE&\n\t\t\tauth-token=YOUR+AUTH-TOKEN+HERE'\n\t-H \"Content-Type: application/json; charset=utf-8\"\n\t--data-binary '\n\t[\n\t\t{\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\"\n\t\t},\n\t\t{\n\t\t\t\"zipcode\":\"12345\"\n\t\t},\n\t\t{\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\"\n\t\t}\n\t]'\nNote: When POSTing JSON, always make sure to add a Content-Type of application/json; charset=utf-8."
+      description: "HTTP POST: Multiple Inputs\n\nA POST request allows a larger volume of data (MAX: 100 inputs or 16K per request) to be sent in the HTTP request body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with three inputs being sent:\n\ncurl -v 'https://us-zipcode.api.smarty.com/lookup?\n\t\t\tauth-id=YOUR+AUTH-ID+HERE&\n\t\t\tauth-token=YOUR+AUTH-TOKEN+HERE'\n\t-H \"Content-Type: application/json; charset=utf-8\"\n\t--data-binary '\n\t[\n\t\t{\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\"\n\t\t},\n\t\t{\n\t\t\t\"zipcode\":\"12345\"\n\t\t},\n\t\t{\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\"\n\t\t}\n\t]'\nNote: When POSTing JSON, always make sure to add a Content-Type of application/json; charset=utf-8."
       requestBody:
         description: Data should be encoded as a `JSON` array where each element in the array is a `JSON` object with field names identical to those in the provided examples.
         content:
@@ -131,7 +131,7 @@ components:
       required: true
       schema:
         type: string
-      description: 'The Host request header field specifies the internet host and port number of the resource being requested. EX: Host: us-zipcode.api.smartystreets.com'
+      description: 'The Host request header field specifies the internet host and port number of the resource being requested. EX: Host: us-zipcode.api.smarty.com'
   schemas:
     '200':
       title: Successful response
