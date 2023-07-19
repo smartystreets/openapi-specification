@@ -228,6 +228,10 @@ components:
           type: string
           description: '12-digit POSTNET™ barcode; consists of 5-digit ZIP Code, 4-digit add-on code, 2-digit delivery point, and 1-digit check digit.'
           maxLength: 12
+        smarty_key:
+          type: string
+          description: 'Smarty's unique identifier for an address. This identifier will only be displayed when an address is submitted with the match parameter set to "enhanced," with an appropriate product subscription.'
+          maxLength: 10
         components:
           $ref: '#/components/schemas/ComponentsObject'
         metadata:
@@ -490,39 +494,39 @@ components:
           type: string
           maxLength: 32
           description: |-
-            Information related to the delivery point validation of this address. All these footnotes have a length of 2 characters, and there may be up to 14 footnotes. 
+            Information related to the delivery point validation of this address. All these footnotes have a length of 2 characters, and there may be up to 14 footnotes.
 
-            AA — Street name, city, state, and ZIP are all valid. 
+            AA — Street name, city, state, and ZIP are all valid.
             (e.g., 2335 S State St Ste 300 Provo UT)
-            A1 — Address not present in USPS data. 
+            A1 — Address not present in USPS data.
             (e.g., 3214 N University Ave New York NY)
-            BB — Entire address is valid. 
+            BB — Entire address is valid.
             (e.g., 2335 S State St Ste 300 Provo UT)
-            CC — The submitted secondary information (apartment, suite, etc.) was not recognized. 
+            CC — The submitted secondary information (apartment, suite, etc.) was not recognized.
             (e.g., 2335 S State St Ste 500 Provo UT)
-            F1 — Military or diplomatic address 
+            F1 — Military or diplomatic address
             (e.g., Unit 2050 Box 4190 APO AP 96278)
-            G1 — General delivery address 
+            G1 — General delivery address
             (e.g., General Delivery Provo UT 84601)
-            M1 — Primary number (e.g., house number) is missing. 
+            M1 — Primary number (e.g., house number) is missing.
             (e.g., N University Ave Provo UT)
-            M3 — Primary number (e.g., house number) is invalid. 
+            M3 — Primary number (e.g., house number) is invalid.
             (e.g., 16 N University Ave Provo UT)
-            N1 — Address is missing secondary information (apartment, suite, etc.). 
+            N1 — Address is missing secondary information (apartment, suite, etc.).
             (e.g., 2335 S State St Provo UT)
-            PB — PO Box street style address. 
+            PB — PO Box street style address.
             (e.g., 555 S B B King Blvd Unit 1 Memphis TN 38103)
-            P1 — PO, RR, or HC box number is missing. 
+            P1 — PO, RR, or HC box number is missing.
             (e.g., Dept 126 Denver CO 802910126)
-            P3 — PO, RR, or HC box number is invalid. 
+            P3 — PO, RR, or HC box number is invalid.
             (e.g., PO BOX 60780 FAIRBANKS AK 99706)
-            RR — Confirmed address with private mailbox (PMB) info. 
+            RR — Confirmed address with private mailbox (PMB) info.
             (e.g., 3214 N University Ave #409 Provo UT)
-            R1 — Confirmed address without private mailbox (PMB) info. 
+            R1 — Confirmed address without private mailbox (PMB) info.
             (e.g., 3214 N University Ave Provo UT)
-            R7 — Confirmed as a valid address that doesn't currently receive US Postal Service street delivery. 
+            R7 — Confirmed as a valid address that doesn't currently receive US Postal Service street delivery.
             (e.g., 6D Cruz Bay St John VI 00830)
-            U1 — Address has a "unique" ZIP Code. 
+            U1 — Address has a "unique" ZIP Code.
             (e.g., 100 North Happy Street 12345)
 
             Here are some common combinations:
