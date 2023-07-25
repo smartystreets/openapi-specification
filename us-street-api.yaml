@@ -198,7 +198,7 @@ components:
         addressee:
           type: string
           description: 'The name of the person or company at this address. This value is taken directly from the addressee input field. Very rarely, this field might be filled automatically based on the USPS address record.'
-          maxLength: 50
+          maxLength: 64
         delivery_line_1:
           type: string
           description: |-
@@ -215,15 +215,15 @@ components:
             extra secondary number
             PMB designator
             PMB number
-          maxLength: 50
+          maxLength: 64
         delivery_line_2:
           type: string
           description: 'The second delivery line (if needed). It is common for this field to remain empty, but it may contain a private mailbox number.'
-          maxLength: 50
+          maxLength: 64
         last_line:
           type: string
           description: 'City, state, and ZIP Code combined'
-          maxLength: 50
+          maxLength: 64
         delivery_point_barcode:
           type: string
           description: '12-digit POSTNET™ barcode; consists of 5-digit ZIP Code, 4-digit add-on code, 2-digit delivery point, and 1-digit check digit.'
