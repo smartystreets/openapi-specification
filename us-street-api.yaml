@@ -287,7 +287,7 @@ components:
             Description of the location type within a campus 
             (e.g., Bldg, Unit, Lot, etc.)
           maxLength: 16
-        pmbdesignator:
+        pmb_designator:
           type: string
           description: 'The private mailbox unit designator, assigned by a CMRA'
           maxLength: 16
