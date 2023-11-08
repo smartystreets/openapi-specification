@@ -1,0 +1,1122 @@
+openapi: 3.1.0
+info:
+  title: us-enrichment-api
+  version: '1.0'
+  description: 'This page describes how to retrieve data from various different datasets using the Smarty US Address Enrichment API.'
+  contact:
+    url: 'https://www.smarty.com/contact/support'
+    email: support@smarty.com
+    name: Smarty Support
+  termsOfService: 'https://www.smarty.com/legal/terms-of-service'
+  license:
+    url: 'https://www.smarty.com/legal/terms-of-service'
+    name: Smarty License
+servers:
+  - url: 'https://us-enrichment.api.smarty.com'
+externalDocs:
+  description: "Extensive documentation for the US Address Enrichment API"
+  url: https://www.smarty.com/docs/cloud/us-address-enrichment-api
+paths:
+  '/lookup/{smartykey}/property/principal':
+    parameters:
+      - schema:
+          type: string
+        name: smartykey
+        in: path
+        required: true
+    get:
+      summary: Property Principal Lookup
+      security:
+        - auth-id: []
+          auth-token: []
+        - embedded-key: []
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+        '400':
+          description: 'Bad Request (Malformed Payload): A GET request lacked a street field, or the request body of a POST request contained malformed JSON. (example: submitting an integer value in the ZIP Code field when a string is expected)'
+        '401':
+          description: 'Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.'
+        '402':
+          description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
+        '429':
+          description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. If you use embedded key authentication, you can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
+      operationId: get-lookup-smartykey-property-principal
+  '/lookup/{smartykey}/property/financial':
+    parameters:
+      - schema:
+          type: string
+        name: smartykey
+        in: path
+        required: true
+    get:
+      summary: Property Financial Lookup
+      security:
+        - auth-id: []
+          auth-token: []
+        - embedded-key: []
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+        '400':
+          description: 'Bad Request (Malformed Payload): A GET request lacked a street field, or the request body of a POST request contained malformed JSON. (example: submitting an integer value in the ZIP Code field when a string is expected)'
+        '401':
+          description: 'Unauthorized: The credentials were provided incorrectly or did not match any existing, active credentials.'
+        '402':
+          description: 'Payment Required: There is no active subscription for the account associated with the credentials submitted with the request.'
+        '429':
+          description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. If you use embedded key authentication, you can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
+      operationId: get-lookup-smartykey-property-financial
+components:
+  schemas:
+    PropertyPrincipalAttributes:
+      type: object
+      properties:
+        1st_floor_sqft:
+          type: string
+        2nd_floor_sqft:
+          type: string
+        acres:
+          type: string
+        air_conditioner:
+          type: string
+        arbor_pergola:
+          type: string
+        assessed_improvement_percent:
+          type: string
+        assessed_improvement_value:
+          type: string
+        assessed_land_value:
+          type: string
+        assessed_value:
+          type: string
+        assessor_last_update:
+          type: string
+        assessor_taxroll_update:
+          type: string
+        attic_area:
+          type: string
+        attic_flag:
+          type: string
+        balcony:
+          type: string
+        balcony_area:
+          type: string
+        basement_sqft:
+          type: string
+        basement_sqft_finished:
+          type: string
+        basement_sqft_unfinished:
+          type: string
+        bath_house:
+          type: string
+        bath_house_sqft:
+          type: string
+        bathrooms_partial:
+          type: string
+        bathrooms_total:
+          type: string
+        bedrooms:
+          type: string
+        block1:
+          type: string
+        block2:
+          type: string
+        boat_access:
+          type: string
+        boat_house:
+          type: string
+        boat_house_sqft:
+          type: string
+        boat_lift:
+          type: string
+        bonus_room:
+          type: string
+        breakfast_nook:
+          type: string
+        breezeway:
+          type: string
+        building_definition_code:
+          type: string
+        building_sqft:
+          type: string
+        cabin:
+          type: string
+        cabin_sqft:
+          type: string
+        canopy:
+          type: string
+        canopy_sqft:
+          type: string
+        carport:
+          type: string
+        carport_sqft:
+          type: string
+        cbsa_code:
+          type: string
+        cbsa_name:
+          type: string
+        cellar:
+          type: string
+        census_block:
+          type: string
+        census_block_group:
+          type: string
+        census_fips_place_code:
+          type: string
+        census_tract:
+          type: string
+        central_vacuum:
+          type: string
+        code_title_company:
+          type: string
+        combined_statistical_area:
+          type: string
+        community_rec:
+          type: string
+        company_flag:
+          type: string
+        congressional_district:
+          type: string
+        construction_type:
+          type: string
+        contact_city:
+          type: string
+        contact_crrt:
+          type: string
+        contact_full_address:
+          type: string
+        contact_house_number:
+          type: string
+        contact_mail_info_format:
+          type: string
+        contact_mail_info_privacy:
+          type: string
+        contact_mailing_county:
+          type: string
+        contact_mailing_fips:
+          type: string
+        contact_post_direction:
+          type: string
+        contact_pre_direction:
+          type: string
+        contact_state:
+          type: string
+        contact_street_name:
+          type: string
+        contact_suffix:
+          type: string
+        contact_unit_designator:
+          type: string
+        contact_value:
+          type: string
+        contact_zip:
+          type: string
+        contact_zip4:
+          type: string
+        courtyard:
+          type: string
+        courtyard_area:
+          type: string
+        deck:
+          type: string
+        deck_area:
+          type: string
+        deed_document_book:
+          type: string
+        deed_document_number:
+          type: string
+        deed_document_page:
+          type: string
+        deed_owner_first_name:
+          type: string
+        deed_owner_first_name2:
+          type: string
+        deed_owner_first_name3:
+          type: string
+        deed_owner_first_name4:
+          type: string
+        deed_owner_full_name:
+          type: string
+        deed_owner_full_name2:
+          type: string
+        deed_owner_full_name3:
+          type: string
+        deed_owner_full_name4:
+          type: string
+        deed_owner_last_name:
+          type: string
+        deed_owner_last_name2:
+          type: string
+        deed_owner_last_name3:
+          type: string
+        deed_owner_last_name4:
+          type: string
+        deed_owner_middle_name:
+          type: string
+        deed_owner_middle_name2:
+          type: string
+        deed_owner_middle_name3:
+          type: string
+        deed_owner_middle_name4:
+          type: string
+        deed_owner_suffix:
+          type: string
+        deed_owner_suffix2:
+          type: string
+        deed_owner_suffix3:
+          type: string
+        deed_owner_suffix4:
+          type: string
+        deed_sale_date:
+          type: string
+        deed_sale_price:
+          type: string
+        deed_transaction_id:
+          type: string
+        depth_linear_footage:
+          type: string
+        disabled_tax_exemption:
+          type: string
+        document_type_description:
+          type: string
+        driveway_sqft:
+          type: string
+        driveway_type:
+          type: string
+        effective_year_built:
+          type: string
+        elevation_feet:
+          type: string
+        elevator:
+          type: string
+        equestrian_arena:
+          type: string
+        escalator:
+          type: string
+        exercise_room:
+          type: string
+        exterior_walls:
+          type: string
+        family_room:
+          type: string
+        fence:
+          type: string
+        fence_area:
+          type: string
+        fips_code:
+          type: string
+        fire_resistance_code:
+          type: string
+        fire_sprinklers_flag:
+          type: string
+        fireplace:
+          type: string
+        fireplace_number:
+          type: string
+        first_name:
+          type: string
+        first_name_2:
+          type: string
+        first_name_3:
+          type: string
+        first_name_4:
+          type: string
+        flooring:
+          type: string
+        foundation:
+          type: string
+        game_room:
+          type: string
+        garage:
+          type: string
+        garage_sqft:
+          type: string
+        gazebo:
+          type: string
+        gazebo_sqft:
+          type: string
+        golf_course:
+          type: string
+        grainery:
+          type: string
+        grainery_sqft:
+          type: string
+        great_room:
+          type: string
+        greenhouse:
+          type: string
+        greenhouse_sqft:
+          type: string
+        gross_sqft:
+          type: string
+        guesthouse:
+          type: string
+        guesthouse_sqft:
+          type: string
+        handicap_accessibility:
+          type: string
+        heat:
+          type: string
+        heat_fuel_type:
+          type: string
+        hobby_room:
+          type: string
+        homeowner_tax_exemption:
+          type: string
+        instrument_date:
+          type: string
+        intercom_system:
+          type: string
+        interest_rate_type_2:
+          type: string
+        interior_structure:
+          type: string
+        kennel:
+          type: string
+        kennel_sqft:
+          type: string
+        land_use_code:
+          type: string
+        land_use_group:
+          type: string
+        land_use_standard:
+          type: string
+        last_name:
+          type: string
+        last_name_2:
+          type: string
+        last_name_3:
+          type: string
+        last_name_4:
+          type: string
+        latitude:
+          type: string
+        laundry:
+          type: string
+        lean_to:
+          type: string
+        lean_to_sqft:
+          type: string
+        legal_description:
+          type: string
+        legal_unit:
+          type: string
+        lender_address:
+          type: string
+        lender_address_2:
+          type: string
+        lender_city:
+          type: string
+        lender_city_2:
+          type: string
+        lender_code_2:
+          type: string
+        lender_first_name:
+          type: string
+        lender_first_name_2:
+          type: string
+        lender_last_name:
+          type: string
+        lender_last_name_2:
+          type: string
+        lender_name:
+          type: string
+        lender_name_2:
+          type: string
+        lender_seller_carry_back:
+          type: string
+        lender_seller_carry_back_2:
+          type: string
+        lender_state:
+          type: string
+        lender_state_2:
+          type: string
+        lender_zip:
+          type: string
+        lender_zip_2:
+          type: string
+        lender_zip_extended:
+          type: string
+        lender_zip_extended_2:
+          type: string
+        loading_platform:
+          type: string
+        loading_platform_sqft:
+          type: string
+        longitude:
+          type: string
+        lot_1:
+          type: string
+        lot_2:
+          type: string
+        lot_3:
+          type: string
+        lot_sqft:
+          type: string
+        market_improvement_percent:
+          type: string
+        market_improvement_value:
+          type: string
+        market_land_value:
+          type: string
+        market_value_year:
+          type: string
+        match_type:
+          type: string
+        media_room:
+          type: string
+        metro_division:
+          type: string
+        middle_name:
+          type: string
+        middle_name_2:
+          type: string
+        middle_name_3:
+          type: string
+        middle_name_4:
+          type: string
+        milkhouse:
+          type: string
+        milkhouse_sqft:
+          type: string
+        minor_civil_division_code:
+          type: string
+        minor_civil_division_name:
+          type: string
+        mobile_home_hookup:
+          type: string
+        mortgage_amount:
+          type: string
+        mortgage_amount_2:
+          type: string
+        mortgage_due_date:
+          type: string
+        mortgage_due_date_2:
+          type: string
+        mortgage_interest_rate:
+          type: string
+        mortgage_interest_rate_type:
+          type: string
+        mortgage_lender_code:
+          type: string
+        mortgage_rate_2:
+          type: string
+        mortgage_recording_date:
+          type: string
+        mortgage_recording_date_2:
+          type: string
+        mortgage_term:
+          type: string
+        mortgage_term_2:
+          type: string
+        mortgage_term_type:
+          type: string
+        mortgage_term_type_2:
+          type: string
+        mortgage_type:
+          type: string
+        mortgage_type_2:
+          type: string
+        msa_code:
+          type: string
+        msa_name:
+          type: string
+        mud_room:
+          type: string
+        multi_parcel_flag:
+          type: string
+        name_title_company:
+          type: string
+        neighborhood_code:
+          type: string
+        number_of_buildings:
+          type: string
+        office:
+          type: string
+        office_sqft:
+          type: string
+        other_tax_exemption:
+          type: string
+        outdoor_kitchen_fireplace:
+          type: string
+        overhead_door:
+          type: string
+        owner_full_name:
+          type: string
+        owner_full_name_2:
+          type: string
+        owner_full_name_3:
+          type: string
+        owner_full_name_4:
+          type: string
+        owner_occupancy_status:
+          type: string
+        ownership_transfer_date:
+          type: string
+        ownership_transfer_doc_number:
+          type: string
+        ownership_transfer_transaction_id:
+          type: string
+        ownership_type:
+          type: string
+        ownership_type_2:
+          type: string
+        ownership_vesting_relation_code:
+          type: string
+        parcel_account_number:
+          type: string
+        parcel_map_book:
+          type: string
+        parcel_map_page:
+          type: string
+        parcel_number_alternate:
+          type: string
+        parcel_number_formatted:
+          type: string
+        parcel_number_previous:
+          type: string
+        parcel_number_year_added:
+          type: string
+        parcel_number_year_change:
+          type: string
+        parcel_raw_number:
+          type: string
+        parcel_shell_record:
+          type: string
+        parking_spaces:
+          type: string
+        patio_area:
+          type: string
+        phase_name:
+          type: string
+        plumbing_fixtures_count:
+          type: string
+        pole_struct:
+          type: string
+        pole_struct_sqft:
+          type: string
+        pond:
+          type: string
+        pool:
+          type: string
+        pool_area:
+          type: string
+        poolhouse:
+          type: string
+        poolhouse_sqft:
+          type: string
+        porch:
+          type: string
+        porch_area:
+          type: string
+        poultry_house:
+          type: string
+        poultry_house_sqft:
+          type: string
+        previous_assessed_value:
+          type: string
+        prior_sale_amount:
+          type: string
+        prior_sale_date:
+          type: string
+        property_address_carrier_route_code:
+          type: string
+        property_address_city:
+          type: string
+        property_address_full:
+          type: string
+        property_address_house_number:
+          type: string
+        property_address_post_direction:
+          type: string
+        property_address_pre_direction:
+          type: string
+        property_address_state:
+          type: string
+        property_address_street_name:
+          type: string
+        property_address_street_suffix:
+          type: string
+        property_address_unit_designator:
+          type: string
+        property_address_unit_value:
+          type: string
+        property_address_zip_4:
+          type: string
+        property_address_zipcode:
+          type: string
+        publication_date:
+          type: string
+        quarter:
+          type: string
+        quarter_quarter:
+          type: string
+        quonset:
+          type: string
+        quonset_sqft:
+          type: string
+        range:
+          type: string
+        recording_date:
+          type: string
+        roof_cover:
+          type: string
+        roof_frame:
+          type: string
+        rooms:
+          type: string
+        rv_parking:
+          type: string
+        safe_room:
+          type: string
+        sale_amount:
+          type: string
+        sale_date:
+          type: string
+        sauna:
+          type: string
+        section:
+          type: string
+        security_alarm:
+          type: string
+        senior_tax_exemption:
+          type: string
+        sewer_type:
+          type: string
+        shed:
+          type: string
+        shed_sqft:
+          type: string
+        silo:
+          type: string
+        silo_sqft:
+          type: string
+        sitting_room:
+          type: string
+        situs_county:
+          type: string
+        situs_state:
+          type: string
+        sound_system:
+          type: string
+        sports_court:
+          type: string
+        sprinklers:
+          type: string
+        stable:
+          type: string
+        stable_sqft:
+          type: string
+        storage_building:
+          type: string
+        storage_building_sqft:
+          type: string
+        stories_number:
+          type: string
+        storm_shelter:
+          type: string
+        storm_shutter:
+          type: string
+        structure_style:
+          type: string
+        study:
+          type: string
+        subdivision:
+          type: string
+        suffix:
+          type: string
+        suffix_2:
+          type: string
+        suffix_3:
+          type: string
+        suffix_4:
+          type: string
+        sunroom:
+          type: string
+        tax_assess_year:
+          type: string
+        tax_billed_amount:
+          type: string
+        tax_delinquent_year:
+          type: string
+        tax_fiscal_year:
+          type: string
+        tax_jurisdiction:
+          type: string
+        tax_rate_area:
+          type: string
+        tennis_court:
+          type: string
+        topography_code:
+          type: string
+        total_market_value:
+          type: string
+        township:
+          type: string
+        tract_number:
+          type: string
+        transfer_amount:
+          type: string
+        trust_description:
+          type: string
+        unit_count:
+          type: string
+        upper_floors_sqft:
+          type: string
+        utility:
+          type: string
+        utility_building:
+          type: string
+        utility_building_sqft:
+          type: string
+        utility_sqft:
+          type: string
+        veteran_tax_exemption:
+          type: string
+        view_description:
+          type: string
+        water_feature:
+          type: string
+        water_service_type:
+          type: string
+        wet_bar:
+          type: string
+        widow_tax_exemption:
+          type: string
+        width_linear_footage:
+          type: string
+        wine_cellar:
+          type: string
+        year_built:
+          type: string
+        zoning:
+          type: string
+    PropertyFinancialAttributes:
+      type: object
+      properties:
+        assessed_improvement_percent:
+          type: string
+        assessed_improvement_value:
+          type: string
+        assessed_land_value:
+          type: string
+        assessed_value:
+          type: string
+        assessor_last_update:
+          type: string
+        assessor_taxroll_update:
+          type: string
+        contact_city:
+          type: string
+        contact_crrt:
+          type: string
+        contact_full_address:
+          type: string
+        contact_house_number:
+          type: string
+        contact_mail_info_format:
+          type: string
+        contact_mail_info_privacy:
+          type: string
+        contact_mailing_county:
+          type: string
+        contact_mailing_fips:
+          type: string
+        contact_post_direction:
+          type: string
+        contact_pre_direction:
+          type: string
+        contact_state:
+          type: string
+        contact_street_name:
+          type: string
+        contact_suffix:
+          type: string
+        contact_unit_designator:
+          type: string
+        contact_value:
+          type: string
+        contact_zip:
+          type: string
+        contact_zip4:
+          type: string
+        deed_document_book:
+          type: string
+        deed_document_number:
+          type: string
+        deed_document_page:
+          type: string
+        deed_owner_first_name:
+          type: string
+        deed_owner_first_name2:
+          type: string
+        deed_owner_first_name3:
+          type: string
+        deed_owner_first_name4:
+          type: string
+        deed_owner_full_name:
+          type: string
+        deed_owner_full_name2:
+          type: string
+        deed_owner_full_name3:
+          type: string
+        deed_owner_full_name4:
+          type: string
+        deed_owner_last_name:
+          type: string
+        deed_owner_last_name2:
+          type: string
+        deed_owner_last_name3:
+          type: string
+        deed_owner_last_name4:
+          type: string
+        deed_owner_middle_name:
+          type: string
+        deed_owner_middle_name2:
+          type: string
+        deed_owner_middle_name3:
+          type: string
+        deed_owner_middle_name4:
+          type: string
+        deed_owner_suffix:
+          type: string
+        deed_owner_suffix2:
+          type: string
+        deed_owner_suffix3:
+          type: string
+        deed_owner_suffix4:
+          type: string
+        deed_sale_date:
+          type: string
+        deed_sale_price:
+          type: string
+        deed_transaction_id:
+          type: string
+        disabled_tax_exemption:
+          type: string
+        financial_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/FinancialHistoryEntry'
+        first_name:
+          type: string
+        first_name_2:
+          type: string
+        first_name_3:
+          type: string
+        first_name_4:
+          type: string
+        homeowner_tax_exemption:
+          type: string
+        last_name:
+          type: string
+        last_name_2:
+          type: string
+        last_name_3:
+          type: string
+        last_name_4:
+          type: string
+        market_improvement_percent:
+          type: string
+        market_improvement_value:
+          type: string
+        market_land_value:
+          type: string
+        market_value_year:
+          type: string
+        match_type:
+          type: string
+        middle_name:
+          type: string
+        middle_name_2:
+          type: string
+        middle_name_3:
+          type: string
+        middle_name_4:
+          type: string
+        other_tax_exemption:
+          type: string
+        owner_full_name:
+          type: string
+        owner_full_name_2:
+          type: string
+        owner_full_name_3:
+          type: string
+        owner_full_name_4:
+          type: string
+        ownership_transfer_date:
+          type: string
+        ownership_transfer_doc_number:
+          type: string
+        ownership_transfer_transaction_id:
+          type: string
+        ownership_type:
+          type: string
+        ownership_type_2:
+          type: string
+        previous_assessed_value:
+          type: string
+        prior_sale_amount:
+          type: string
+        prior_sale_date:
+          type: string
+        sale_amount:
+          type: string
+        sale_date:
+          type: string
+        senior_tax_exemption:
+          type: string
+        suffix:
+          type: string
+        suffix_2:
+          type: string
+        suffix_3:
+          type: string
+        suffix_4:
+          type: string
+        tax_assess_year:
+          type: string
+        tax_billed_amount:
+          type: string
+        tax_delinquent_year:
+          type: string
+        tax_fiscal_year:
+          type: string
+        tax_rate_area:
+          type: string
+        total_market_value:
+          type: string
+        trust_description:
+          type: string
+        veteran_tax_exemption:
+          type: string
+        widow_tax_exemption:
+          type: string
+    FinancialHistoryEntry:
+      type: object
+      properties:
+        code_title_company:
+          type: string
+        document_type_description:
+          type: string
+        instrument_date:
+          type: string
+        interest_rate_type_2:
+          type: string
+        lender_address:
+          type: string
+        lender_address_2:
+          type: string
+        lender_city:
+          type: string
+        lender_city_2:
+          type: string
+        lender_code_2:
+          type: string
+        lender_first_name:
+          type: string
+        lender_first_name_2:
+          type: string
+        lender_last_name:
+          type: string
+        lender_last_name_2:
+          type: string
+        lender_name:
+          type: string
+        lender_name_2:
+          type: string
+        lender_seller_carry_back:
+          type: string
+        lender_seller_carry_back_2:
+          type: string
+        lender_state:
+          type: string
+        lender_state_2:
+          type: string
+        lender_zip:
+          type: string
+        lender_zip_2:
+          type: string
+        lender_zip_extended:
+          type: string
+        lender_zip_extended_2:
+          type: string
+        mortgage_amount:
+          type: string
+        mortgage_amount_2:
+          type: string
+        mortgage_due_date:
+          type: string
+        mortgage_due_date_2:
+          type: string
+        mortgage_interest_rate:
+          type: string
+        mortgage_interest_rate_type:
+          type: string
+        mortgage_lender_code:
+          type: string
+        mortgage_rate_2:
+          type: string
+        mortgage_recording_date:
+          type: string
+        mortgage_recording_date_2:
+          type: string
+        mortgage_term:
+          type: string
+        mortgage_term_2:
+          type: string
+        mortgage_term_type:
+          type: string
+        mortgage_term_type_2:
+          type: string
+        mortgage_type:
+          type: string
+        mortgage_type_2:
+          type: string
+        multi_parcel_flag:
+          type: string
+        name_title_company:
+          type: string
+        recording_date:
+          type: string
+        transfer_amount:
+          type: string
+  responses:
+    '200':
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                smarty_key:
+                  type: string
+                data_set_name:
+                  type: string
+                data_subset_name:
+                  type: string
+                attributes:
+                  oneOf:
+                    - $ref: '#/components/schemas/PropertyPrincipalAttributes'
+                    - $ref: '#/components/schemas/PropertyFinancialAttributes'
+  securitySchemes:
+    auth-id:
+      name: auth-id
+      type: apiKey
+      in: query
+      description: URL-encoded ID generated with an associated token in the users Smarty account.
+    auth-token:
+      name: auth-token
+      type: apiKey
+      in: query
+      description: Authentication token generated with an associated URL-encoded ID in the users Smarty account.
+    embedded-key:
+      name: key
+      type: apiKey
+      in: query
+      description: Embedded key are associated with one or more hostnames and/or IP addresses which you specify. Each of the hostnames (indicated by the 'Referer' header or 'Origin' header) will be granted rate-limited permission to call the API with the associated embedded key. This can be generated in your Smarty account.
