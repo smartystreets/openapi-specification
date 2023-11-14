@@ -230,7 +230,7 @@ components:
           maxLength: 12
         smarty_key:
           type: string
-          description: 'Smarty's unique identifier for an address. This identifier will only be displayed when an address is submitted with the match parameter set to "enhanced," with an appropriate product subscription.'
+          description: "Smarty's unique identifier for an address. This identifier will only be displayed when an address is submitted with the match parameter set to enhanced, with an appropriate product subscription."
           maxLength: 10
         components:
           $ref: '#/components/schemas/ComponentsObject'
