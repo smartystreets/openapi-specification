@@ -44,9 +44,8 @@ paths:
         - $ref: '#/components/parameters/country'
         - $ref: '#/components/parameters/search'
         - $ref: '#/components/parameters/max_results'
-        - $ref: '#/components/parameters/distance'
+        - $ref: '#/components/parameters/max_group_results'
         - $ref: '#/components/parameters/geolocation'
-        - $ref: '#/components/parameters/include_only_administrative_area'
         - $ref: '#/components/parameters/include_only_locality'
         - $ref: '#/components/parameters/include_only_postal_code'
         - $ref: '#/components/parameters/latitude'
@@ -63,21 +62,22 @@ components:
           type: string
         administrative_area:
           type: string
-        sub_administrative_area:
+        administrative_area_short:
           type: string
-        super_administrative_area:
+        administrative_area_long:
           type: string
         postal_code:
           type: string
         country_iso3:
           type: string
       examples:
-        - street: De Blikken 1
-          locality: Oostburg
-          administrative_area: Zeeland
-          sub_administrative_area: Sluis
-          postal_code: 4501 AC
-          country_iso3: NLD
+        - street: 1-123 Main St
+          locality: Fredericton
+          administrative_area: NB
+          administrative_area_short: NB
+          administrative_area_long: New Brunswick
+          postal_code: E3A 1C7
+          country_iso3: CAN
   securitySchemes:
     auth-id:
       type: apiKey
@@ -136,27 +136,20 @@ components:
       schema:
         type: integer
       description: 'Maximum number of address suggestions to return; range [1, 10]. Default: 5'
-    distance:
-      name: distance
+    max_group_results:
+      name: max_group_results
       in: query
       required: false
       schema:
         type: integer
-      description: 'When using geolocation=geocodes, and latitude/longitude, this field specifies the radius in MILES from the geocode point. Default: 5'
+      description: 'Maximum number of address suggestions to return when expanding address groups with an Address ID; range [1, 100].'
     geolocation:
       name: geolocation
       in: query
       required: false
       schema:
         type: string
-      description: 'Use the client''s IP address to limit results to the surrounding area. The possible options are: adminarea - Limit results to the client''s administrative area (state, province, etc.). locality - Limit results to the client''s locality (city). postalcode - Limit results to the postal code where the client''s IP address is registered. geocodes - Limit results to an area surrounding the lat/lon where the user''s IP address is registered. See also distance.'
-    include_only_administrative_area:
-      name: include_only_administrative_area
-      in: query
-      required: false
-      schema:
-        type: string
-      description: 'Limit the results to only the administrative area provided. An administrative area is like a state in the United States, a province in Canada, or region in France. Please use the correct postal name for the administrative area (e.g. use "NSW" instead of "New South Wales").  Example: NSW'
+      description: "Bias (prefer) results based on the location of the sender's IP address (IPv4 only). Valid value: on \n Supported countries: CAN, AUS, DEU. If the request to the API goes through a proxy, you will need to set an X-Forwarded-For header specifying the desired IP address for the request."
     include_only_locality:
       name: include_only_locality
       in: query

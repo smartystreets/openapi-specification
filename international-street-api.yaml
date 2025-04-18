@@ -43,7 +43,21 @@ paths:
         '504':
           $ref: '#/components/responses/504'
       operationId: get-verify
-      description: "To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the address1, address2, locality, administrative_area, postal_code, and country fields:\n\ncurl -v 'https://international-street.api.smarty.com/verify?\n\tauth-id=YOUR+AUTH-ID+HERE&\n\tauth-token=YOUR+AUTH-TOKEN+HERE&\n\n\taddress1=Rua+Padre+Antonio+D%27Angelo+121&\n\taddress2=Casa+Verde&\n\tlocality=Sao+Paulo&\n\tadministrative_area=SP&\n\tpostal_code=02516-040&\n\tcountry=Brazil'\n\t\nPlease note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.\n\n"
+      description: |
+        To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the address1, address2, locality, administrative_area, postal_code, and country fields:
+        ```
+        curl -v 'https://international-street.api.smarty.com/verify?
+          auth-id=YOUR+AUTH-ID+HERE&
+          auth-token=YOUR+AUTH-TOKEN+HERE&
+      
+          address1=Rua+Padre+Antonio+D%27Angelo+121&
+          address2=Casa+Verde&
+          locality=Sao+Paulo&
+          administrative_area=SP&
+          postal_code=02516-040&
+          country=Brazil'
+        ```
+        Please note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.
       parameters:
         - $ref: '#/components/parameters/Host'
         - $ref: '#/components/parameters/input_id'
@@ -102,6 +116,9 @@ components:
           description: |-
             The most common administrative division within a country 
             (e.g., province in Canada)
+        administrative_area_iso2:
+          type: string
+          description: 'The administrative area ISO 3166-2 data (if available for the country). The value is the two letter country code, followed by a hyphen, followed by the one to three character code for the administrative area. (e.g., CA-ON)'
         super_administrative_area:
           type: string
           description: |-
@@ -270,6 +287,27 @@ components:
           description: |-
             The alphanumeric component of the postbox 
             (E.g., if post_box contains "PO Box 1234" post_box_number would contain "1234.")
+        additional_content:
+          type: string
+          description: '(Canada) Content used in postal delivery (E.g., Site 2 Comp 12)'
+        delivery_installation:
+          type: string
+          description: '(Canada) Delivery installation - a composite of delivery_install_type and delivery_installation_qualifier_name (E.g., Rpo Ritson Centre)'
+        delivery_installation_type:
+          type: string
+          description: '(Canada) Delivery installation type (E.g., RPO)'
+        delivery_installation_qualifier_name:
+          type: string
+          description: '(Canada) Delivery name associated with delivery_installation_type (E.g., Ritson Centre)'
+        route:
+          type: string
+          description: '(Canada) Route - a composite of route_type and route_number (E.g., RR 4)'
+        route_type:
+          type: string
+          description: '(Canada) Route type (E.g., RR, GD, etc.)'
+        route_number:
+          type: string
+          description: '(Canada) Route number associated with route_type (E.g., 4)'
     Metadata:
       title: Metadata
       type: object
@@ -389,6 +427,9 @@ components:
         Unrecognized
         Field was unrecognized.
       properties:
+        organization:
+          type: string
+          description: 'If present, the degree of change to the name of the recipient, firm, or company at this address.'
         components:
           $ref: '#/components/schemas/Components'
   securitySchemes:
@@ -450,10 +491,10 @@ components:
     country:
       name: country
       in: query
-      required: false
+      required: true
       schema:
         type: string
-      description: '(required) This must be entered with every address. Country Name or ISO classification (ISO-3, ISO-2 or ISO-N). Address validation will fail if this is missing.  (e.g., Brazil, BRA, BR, or 076)'
+      description: 'This must be entered with every address. Country Name or ISO classification (ISO-3, ISO-2 or ISO-N). Address validation will fail if this is missing.  (e.g., Brazil, BRA, BR, or 076)'
     geocode:
       name: geocode
       in: query
