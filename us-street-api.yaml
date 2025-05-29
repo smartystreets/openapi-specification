@@ -21,7 +21,8 @@ paths:
   /street-address:
     get:
       summary: Single Address Validation
-      tags: []
+      tags:
+        - street-address
       security:
         - auth-id: []
           auth-token: []
@@ -40,9 +41,15 @@ paths:
           description: 'Too Many Requests: When using public embedded key authentication, we restrict the number of requests coming from a given source over too short of a time. If you use embedded key authentication, you can avoid this error by adding your IP address as an authorized host for the embedded key in question.'
       description: |
         To send one (and only one) address to our API, simply encode the input field names from the table below along with the corresponding input values as query string parameters in the URL of your request. Here's an example that uses the street, city, state, and candidates fields (line breaks added for readability):
-
-        curl -v 'https://us-street.api.smarty.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&street=1600+amphitheatre+pkwy&city=mountain+view&state=CA&candidates=10'
-
+        ```
+        curl -v 'https://us-street.api.smarty.com/street-address?
+          auth-id=YOUR+AUTH-ID+HERE&
+          auth-token=YOUR+AUTH-TOKEN+HERE&
+          street=1600+amphitheatre+pkwy&
+          city=mountain+view&
+          state=CA&
+          candidates=10'
+        ```
         Please note that all query string parameter values must be url-encoded (spaces become + or %20, for example) to ensure that the data is transferred correctly. A common mistake we see is a non-encoded pound sign (#) like in an apartment number (# 409). This character, when properly encoded in a URL, becomes %23. When not encoded this character functions as the fragment identifier, which is ignored by our API servers.
       parameters:
         - schema:
@@ -59,6 +66,7 @@ paths:
           name: Host
           description: 'The Host request header field specifies the internet host of the resource being requested. Optionally, it can also specify a non-default port number.'
           required: true
+        - $ref: '#/components/parameters/input_id'
         - $ref: '#/components/parameters/street'
         - $ref: '#/components/parameters/street2'
         - $ref: '#/components/parameters/secondary'
@@ -70,9 +78,12 @@ paths:
         - $ref: '#/components/parameters/urbanization'
         - $ref: '#/components/parameters/candidates'
         - $ref: '#/components/parameters/match'
-        - $ref: '#/components/parameters/input_id'
+        - $ref: '#/components/parameters/format'
+        - $ref: '#/components/parameters/county_source'
     post:
       summary: Multiple Address Validation
+      tags:
+        - street-address
       operationId: post-street-address
       security:
         - auth-id: []
@@ -81,7 +92,31 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulResponse'
-      description: "A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):\n\ncurl -v 'https://us-street.api.smarty.com/street-address?auth-id=YOUR+AUTH-ID+HERE&auth-token=YOUR+AUTH-TOKEN+HERE&license=YOUR+LICENSE+HERE&' -H \"Content-Type: application/json; charset=utf-8\"\n--data-binary '\n\t[\n\t\t{\n\t\t\t\"street\":\"1 Santa Claus\",\n\t\t\t\"city\":\"North Pole\",\n\t\t\t\"state\":\"AK\",\n\t\t\t\"candidates\":10\n\t\t},\n\t\t{\n\t\t\t\"addressee\":\"Apple Inc\",\n\t\t\t\"street\":\"1 infinite loop\",\n\t\t\t\"city\":\"cupertino\",\n\t\t\t\"state\":\"CA\",\n\t\t\t\"zipcode\":\"95014\",\n\t\t\t\"candidates\":10\n\t\t}\n\t]'"
+      description: | 
+        A POST request allows a larger volume of data (MAX: 100 addresses or 32K per request) to be sent in the HTTP Request Body. In this case, the data should be encoded as a JSON array where each element in the array is a JSON object with field names identical to those in the field listing below. Here's a sample request with two addresses being sent (line breaks added for readability):
+        ```bash
+        curl -v 'https://us-street.api.smarty.com/street-address?
+          auth-id=YOUR+AUTH-ID+HERE&
+          auth-token=YOUR+AUTH-TOKEN+HERE&'
+          -H "Content-Type: application/json; charset=utf-8"
+          --data-binary '
+          [
+            {
+              "street":"1 Santa Claus",
+              "city":"North Pole",
+              "state":"AK",
+              "candidates":10
+            },
+            {
+              "addressee":"Apple Inc",
+              "street":"1 infinite loop",
+              "city":"cupertino",
+              "state":"CA",
+              "zipcode":"95014",
+              "candidates":10
+            }
+          ]'
+        ```
       parameters:
         - schema:
             type: string
@@ -102,12 +137,21 @@ paths:
     parameters: []
 components:
   parameters:
+    input_id:
+      name: input_id
+      in: query
+      example: 867-5309
+      description: '**Input ID** *Example: 867-5309* A unique identifier for this address used in your application; this field will be copied to the output'
+      schema:
+        type: string
+        maxLength: 36
     street:
       name: street
       in: query
       description: '**Street** *Example: 1600+amphitheatre+pkwy* The street line of the address, or the entire address(''freeform'' input).'
       schema:
         type: string
+        maxLength: 50
     street2:
       name: street2
       in: query
@@ -168,15 +212,20 @@ components:
       description: '**Match Type** *Example: invalid* The match output strategy to be employted for this lookup. Valid values are: **strict**: The API will ONLY return candidates that are valid USPS addresses. **range**: The API will return candidates that are valid USPS addresses, as well as invalid addresses with primary numbers that fall within a valid range for the street. **invalid**: The API will return a single candidate for every properly submitted address, even if invalid or ambiguous.'
       schema:
         type: string
-    input_id:
-      name: input_id
+    format:
+      name: format
       in: query
-      example: 867-5309
-      description: '**Input ID** *Example: 867-5309* A unique identifier for this address used in your application; this field will be copied to the output'
+      description: 'The output format to be employed for this lookup, with an appropriate product subscription. Valid values are: default  The API will return the address in the default format. project-usa  The API will return the address in Project US@ format.'
+      schema:
+        type: string
+    county_source:
+      name: county_source
+      in: query
+      description: 'The authoritative source to be used for the county information of the address. Valid values are: postal  The API will return county information based on the postal delivery information of the address. This is the default option. geographic  The API will return county information based on the physical location of the address.'
       schema:
         type: string
   schemas:
-    ResponseComponent:
+    Root:
       title: Response Component
       type: object
       description: Object found in the response list to the request
@@ -203,18 +252,18 @@ components:
           type: string
           description: |-
             Contains the first delivery line (usually the street address). This can include any of the following: 
-            urbanization (Puerto Rico only)
-            primary number
-            street predirection
-            street name
-            street suffix
-            street postdirection
-            secondary designator
-            secondary number
-            extra secondary designator
-            extra secondary number
-            PMB designator
-            PMB number
+            - urbanization (Puerto Rico only)
+            - primary number
+            - street predirection
+            - street name
+            - street suffix
+            - street postdirection
+            - secondary designator
+            - secondary number
+            - extra secondary designator
+            - extra secondary number
+            - PMB designator
+            - PMB number
           maxLength: 64
         delivery_line_2:
           type: string
@@ -233,13 +282,13 @@ components:
           description: "Smarty's unique identifier for an address. This identifier will only be displayed when an address is submitted with the match parameter set to enhanced, with an appropriate product subscription."
           maxLength: 10
         components:
-          $ref: '#/components/schemas/ComponentsObject'
+          $ref: '#/components/schemas/Components'
         metadata:
-          $ref: '#/components/schemas/MetadataObject'
+          $ref: '#/components/schemas/Metadata'
         analysis:
-          $ref: '#/components/schemas/AnalysisObject'
-    ComponentsObject:
-      title: Components Object
+          $ref: '#/components/schemas/Analysis'
+    Components:
+      title: Components
       type: object
       description: Object representing the different components of a verified address
       properties:
@@ -323,8 +372,8 @@ components:
           type: string
           description: 'Correction character, or check digit, for the 11-digit barcode'
           maxLength: 1
-    MetadataObject:
-      title: Metadata Object
+    Metadata:
+      title: Metadata
       type: object
       properties:
         record_type:
@@ -443,6 +492,7 @@ components:
             Zip7 — Accurate to a 7-digit ZIP Code level
             Zip8 — Accurate to an 8-digit ZIP Code level
             Zip9 — Accurate to a 9-digit ZIP Code level (most precise with the basic subscription)
+            Street — Accurate to a position along the street proportional to the house/building number.
             Parcel — Accurate to the centroid of a property parcel. Requires the US Rooftop Geocoding subscription.
             Rooftop — Accurate to the rooftop of a structure for this address. Requires the US Rooftop Geocoding subscription.
 
@@ -472,8 +522,8 @@ components:
 
             If dst is absent from the response, then time zone does not observe daylight saving time.
       description: Object representing the different metadata of a verified address
-    AnalysisObject:
-      title: Analysis Object
+    Analysis:
+      title: Analysis
       type: object
       properties:
         dpv_match_code:
@@ -502,7 +552,9 @@ components:
             (e.g., 3214 N University Ave New York NY)
             BB — Entire address is valid.
             (e.g., 2335 S State St Ste 300 Provo UT)
-            CC — The submitted secondary information (apartment, suite, etc.) was not recognized.
+            CC — The submitted secondary information (apartment, suite, etc.) was not recognized. Secondary number is NOT REQUIRED for delivery.
+            (e.g., 3331 Erie Ave Apt 2 Cincinnati OH 45208)
+            C1 — The submitted secondary information (apartment, suite, etc.) was not recognized. Secondary number IS REQUIRED for delivery.
             (e.g., 2335 S State St Ste 500 Provo UT)
             F1 — Military or diplomatic address
             (e.g., Unit 2050 Box 4190 APO AP 96278)
@@ -526,6 +578,8 @@ components:
             (e.g., 3214 N University Ave Provo UT)
             R7 — Confirmed as a valid address that doesn't currently receive US Postal Service street delivery.
             (e.g., 6D Cruz Bay St John VI 00830)
+            TA — Primary number was matched by dropping trailing alpha.
+            (e.g., 4-C PENINSULA CTR RANCHO PALOS VERDES CA 90274)
             U1 — Address has a "unique" ZIP Code.
             (e.g., 100 North Happy Street 12345)
 
@@ -607,10 +661,9 @@ components:
           description: |-
             When an address is submitted with the match parameter set to "enhanced," this field will contain additional information about the result. Multiple values may be present, separated by commas. Additional values will be added from time to time. The current possible values are:
 
-            [blank] — Enhanced matching was not performed because it was unnecessary to obtain a match.
-            none — Enhanced matching was performed but no address match was found.
-            non-postal-match — Enhanced matching was performed and a match was found within additional, non-postal address data.
-            postal-match — Enhanced matching was performed and a match was found within postal address data.
+            none — No address match was found.
+            non-postal-match — A match was found within additional, non-postal address data.
+            postal-match — A match was found within postal address data.
             missing-secondary — The address should have a secondary (e.g., apartment), but none was found in the input.
             unknown-secondary — The provided secondary information did not match a known secondary within the address data.
             ignored-input — The provided input contained information that was not used for a match.
@@ -697,8 +750,18 @@ components:
             (2) When submitting addresses in components, setting match to invalid will prevent the API from finding valid matches for ambiguous address input.
           maxLength: 8
           default: strict
-      required:
-        - street
+        format:
+          type: string
+          description: |-
+            The output format to be employed for this lookup, with an appropriate product subscription. Valid values are:
+            default  The API will return the address in the default format.
+            project-usa  The API will return the address in Project US@ format.
+        county_source:
+          type: string
+          description: |-
+            The authoritative source to be used for the county information of the address. Valid values are:
+            postal  The API will return county information based on the postal delivery information of the address. This is the default option.
+            geographic  The API will return county information based on the physical location of the address.
       description: |-
         Each address submitted must have non-blank values for one of the following field combinations to be eligible for a positive address match:
 
@@ -739,4 +802,4 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/ResponseComponent'
+              $ref: '#/components/schemas/Root'

@@ -42,23 +42,35 @@ paths:
       operationId: get-street-address
       parameters:
         - schema:
+            type: string
+          in: header
+          name: Host
+          required: true
+          description: 'The Host request header field specifies the internet host and port number of the resource being requested. Note: Most HTTP clients such as the browser, or programming language HTTP libraries will add this header automatically.'
+        - schema:
+            type: string
+          in: header
+          name: Referer
+          required: false
+          description: 'The Referer is required when an embedded key is used for authentication. Its value is in the form of a URL, where the host component must match a host value assigned to your embedded key. Note: Some HTTP clients such as a browser, or programming language HTTP libraries will add this header automatically. However some interfaces such as cURL do not, so you may need to add it manually.'
+        - schema:
             type: number
           in: query
           name: latitude
+          required: true
           description: latitudinal coordinate to begin search
         - schema:
             type: number
           in: query
           name: longitude
+          required: true
           description: longitudinal coordinate to begin search
       description: This api runs Smarty's reverse geocoding algorithms to convert latitudinal and longitudinal coordinates into the closest street addresses at lightning speed! Enter your auth-id and auth-token or just a Smarty embedded-key along with your coordinates and you are off!
       security:
-        - auth-id: []
-          auth-token: []
-        - embedded-key: []
-      requestBody:
-        $ref: '#/components/requestBodies/ReverseGeoRequest'
-    parameters: []
+        - auth-id: [ ]
+          auth-token: [ ]
+        - embedded-key: [ ]
+    parameters: [ ]
 components:
   schemas:
     Address:
@@ -73,18 +85,22 @@ components:
       properties:
         street:
           type: string
+          maxLength: 64
           description: varchar(64) The street name of this address.
         city:
           type: string
+          maxLength: 64
           description: varchar(64) The city name of this address.
         state_abbreviation:
           type: string
+          maxLength: 2
           description: varchar(2) The state abbreviation of this address.
         zipcode:
           type: string
+          maxLength: 5
           description: varchar(5) The 5-digit ZIP Code of this address.
       required:
-        - street
+        - Street
         - city
         - state_abbreviation
         - zipcode
@@ -112,6 +128,7 @@ components:
             Info: The longitude value of this address.
         accuracy:
           type: string
+          maxLength: 18
           description: |-
             Type: varchar(18)
 
@@ -139,20 +156,25 @@ components:
         - license
     Result:
       title: Result
-      type: object
-      properties:
-        distance:
-          type: number
-          description: The distance in meters of this address to the input latitude/longitude values.
-        address:
-          $ref: '#/components/schemas/Address'
-          description: Address object containing basic address information
-        coordinate:
-          $ref: '#/components/schemas/Coordinate'
-          description: Coordinate object containing basic coordinate information
-      required:
-        - address
-        - coordinate
+      type: array
+      maxLength: 10
+      items:
+        type: object
+        properties:
+          coordinate:
+            $ref: '#/components/schemas/Coordinate'
+            description: Coordinate object containing basic coordinate information
+          distance:
+            type: number
+            examples:
+              - 34.95276
+            description: The distance in meters of this address to the input latitude/longitude values.
+          address:
+            $ref: '#/components/schemas/Address'
+            description: Address object containing basic address information
+        required:
+          - address
+          - coordinate
   securitySchemes:
     auth-id:
       name: auth-id
@@ -169,40 +191,6 @@ components:
       type: apiKey
       in: query
       description: Embedded key are associated with one or more hostnames and/or IP addresses which you specify. Each of the hostnames (indicated by the 'Referer' header or 'Origin' header) will be granted rate-limited permission to call the API with the associated embedded key.
-  requestBodies:
-    ReverseGeoRequest:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              auth-id:
-                type: string
-                description: Auth-id generated in your Smarty account
-              auth-token:
-                type: string
-                description: Auth-token generated in your Smarty account
-              key:
-                type: string
-                description: Embedded key generated in your Smarty account
-              latitude:
-                type: number
-                description: latitudinal coordinates to begin search
-              longitude:
-                type: number
-                description: longitudinal coordinates to begin search
-            required:
-              - latitude
-              - longitude
-          examples:
-            Example:
-              value:
-                auth-id: YOUR+AUTH-ID+HERE
-                auth-token: YOUR+AUTH-TOKEN+HERE
-                key: OR+YOUR+EMBEDDED-KEY+HERE
-                latitude: 40.202583
-                longitude: -111.62196
-      description: Request with required information to submit a reverse geocoding api call
   responses:
     ReverseGeoValidResponse:
       description: 'Valid reverse geocoding response containing the results of the search. Each object in the results list will contain an Address object, Coordinate object, and an optional distance field. The distance field is left blank where there is an exact match.'
