@@ -35,7 +35,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyPrincipalResponse'
+          $ref: '#/components/responses/PropertyPrincipalResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -69,7 +69,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyPrincipalResponse'
+          $ref: '#/components/responses/PropertyPrincipalResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -99,7 +99,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyFinancialResponse'
+          $ref: '#/components/responses/PropertyFinancialResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -133,7 +133,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyFinancialResponse'
+          $ref: '#/components/responses/PropertyFinancialResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -161,7 +161,7 @@ paths:
       - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/GeoReferenceResponse'
+          $ref: '#/components/responses/GeoReferenceResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -193,7 +193,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/GeoReferenceResponse'
+          $ref: '#/components/responses/GeoReferenceResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -223,7 +223,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/RiskResponse'
+          $ref: '#/components/responses/RiskResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -257,7 +257,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/RiskResponse'
+          $ref: '#/components/responses/RiskResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -284,7 +284,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryResponse'
+          $ref: '#/components/responses/SecondaryResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -315,7 +315,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryResponse'
+          $ref: '#/components/responses/SecondaryResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -342,7 +342,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryCountResponse'
+          $ref: '#/components/responses/SecondaryCountResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -373,7 +373,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryCountResponse'
+          $ref: '#/components/responses/SecondaryCountResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -460,28 +460,64 @@ components:
         type: string
       description: 'The ZIP Code. You may also need to provide values for other component search fields.'
   schemas:
-    PropertyPrincipalResponse:
-      allOf:
-        - $ref: '#/components/schemas/Response'
-        - type: object
+    PropertyPrincipalResponseSmartyKey:
       properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
         attributes:
           allOf:
             - $ref: '#/components/schemas/GroupStructuralAttributes'
             - $ref: '#/components/schemas/GroupLocationAttributes'
-    PropertyFinancialResponse:
-      allOf:
-        - $ref: '#/components/schemas/Response'
-        - type: object
+    PropertyPrincipalResponseSearch:
       properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
+        matched_address:
+         $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/GroupStructuralAttributes'
+            - $ref: '#/components/schemas/GroupLocationAttributes'
+    PropertyFinancialResponseSmartyKey:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
         attributes:
           allOf:
             - $ref: '#/components/schemas/GroupFinancialAttributes'
-    GeoReferenceResponse:
-      allOf:
-        - $ref: '#/components/schemas/Response'
-        - type: object
+    PropertyFinancialResponseSearch:
       properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
+        matched_address:
+          $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/GroupFinancialAttributes'
+    GeoReferenceResponseSmartyKey:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_set_version:
+          type: string
         attributes:
           type: object
           properties:
@@ -495,15 +531,61 @@ components:
               $ref: '#/components/schemas/CoreBasedStatArea'
             place:
               $ref: '#/components/schemas/Place'
-    RiskResponse:
-      allOf:
-        - $ref: '#/components/schemas/Response'
-        - type: object
+    GeoReferenceResponseSearch:
       properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_set_version:
+          type: string
+        matched_address:
+          $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          type: object
+          properties:
+            census_block:
+              $ref: '#/components/schemas/CensusBlock'
+            census_county_division:
+              $ref: '#/components/schemas/CensusCountyDivision'
+            census_tract:
+              $ref: '#/components/schemas/CensusTract'
+            core_based_stat_area:
+              $ref: '#/components/schemas/CoreBasedStatArea'
+            place:
+              $ref: '#/components/schemas/Place'
+    RiskResponseSmartyKey:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
         attributes:
           allOf:
             - $ref: '#/components/schemas/RiskFields'
-    SecondaryResponse:
+    RiskResponseSearch:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        matched_address:
+          $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/RiskFields'
+    SecondaryResponseSmartyKey:
+      type: object
+      properties:
+        smarty_key:
+          type: string
+        root_address:
+          $ref: '#/components/schemas/RootAddress'
+        secondaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Secondaries'
+    SecondaryResponseSearch:
       type: object
       properties:
         smarty_key:
@@ -516,7 +598,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Secondaries'
-    SecondaryCountResponse:
+    SecondaryCountResponseSmartyKey:
+      type: object
+      properties:
+        smarty_key:
+          type: string
+        count:
+          type: integer
+    SecondaryCountResponseSearch:
       type: object
       properties:
         smarty_key:
@@ -525,38 +614,6 @@ components:
           $ref: '#/components/schemas/MatchedAddress'
         count:
           type: integer
-    RootAddress:
-      type: object
-      properties:
-        secondary_count:
-          type: integer
-        smarty_key:
-          type: string
-        primary_number:
-          type: string
-        street_name:
-          type: string
-        street_suffix:
-          type: string
-        city_name:
-          type: string
-        state_abbreviation:
-          type: string
-        zipcode:
-          type: string
-        plus4_code:
-          type: string
-    Secondaries:
-      type: object
-      properties:
-        smarty_key:
-          type: string
-        secondary_designator:
-          type: string
-        secondary_number:
-          type: string
-        plus4_code:
-          type: string
     CensusBlock:
       type: object
       description: 'An id of up to 15 characters that identifies a geographical area for statistical analysis.'
@@ -1433,6 +1490,17 @@ components:
             type: string
           transfer_amount:
             type: string
+    MatchedAddress:
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: string
     RiskFields:
       properties:
         AGRIVALUE:
@@ -2830,32 +2898,41 @@ components:
         WNTW_RISKV:
           type: string
           description: "Winter Weather - Hazard Type Risk Index Value"
-
-    MatchedAddress:
+    RootAddress:
       type: object
       properties:
-        street:
+        secondary_count:
+          type: integer
+        smarty_key:
           type: string
-        city:
+        primary_number:
           type: string
-        state:
+        street_name:
+          type: string
+        street_suffix:
+          type: string
+        city_name:
+          type: string
+        state_abbreviation:
           type: string
         zipcode:
           type: string
-    Response:
+        plus4_code:
+          type: string
+    Secondaries:
       type: object
-      description: properties in every response
       properties:
         smarty_key:
           type: string
-        data_set_name:
+        secondary_designator:
           type: string
-        data_subset_name:
+        secondary_number:
           type: string
-        matched_address:
-          $ref: '#/components/schemas/MatchedAddress'
+        plus4_code:
+          type: string
+
   responses:
-    PropertyPrincipalResponse:
+    PropertyPrincipalResponseSearch:
       description: Ok Response
       content:
         application/json:
@@ -2863,8 +2940,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/PropertyPrincipalResponse'
-    PropertyFinancialResponse:
+              $ref: '#/components/schemas/PropertyPrincipalResponseSearch'
+    PropertyPrincipalResponseSmartyKey:
       description: Ok Response
       content:
         application/json:
@@ -2872,8 +2949,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/PropertyFinancialResponse'
-    GeoReferenceResponse:
+              $ref: '#/components/schemas/PropertyPrincipalResponseSmartyKey'
+    PropertyFinancialResponseSearch:
       description: Ok Response
       content:
         application/json:
@@ -2881,8 +2958,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/GeoReferenceResponse'
-    RiskResponse:
+              $ref: '#/components/schemas/PropertyFinancialResponseSearch'
+    PropertyFinancialResponseSmartyKey:
       description: Ok Response
       content:
         application/json:
@@ -2890,8 +2967,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/RiskResponse'
-    SecondaryResponse:
+              $ref: '#/components/schemas/PropertyFinancialResponseSmartyKey'
+    GeoReferenceResponseSearch:
       description: Ok Response
       content:
         application/json:
@@ -2899,8 +2976,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/SecondaryResponse'
-    SecondaryCountResponse:
+              $ref: '#/components/schemas/GeoReferenceResponseSearch'
+    GeoReferenceResponseSmartyKey:
       description: Ok Response
       content:
         application/json:
@@ -2908,7 +2985,62 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/SecondaryCountResponse'
+              $ref: '#/components/schemas/GeoReferenceResponseSmartyKey'
+    RiskResponseSearch:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/RiskResponseSearch'
+    RiskResponseSmartyKey:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/RiskResponseSmartyKey'
+    SecondaryResponseSearch:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryResponseSearch'
+    SecondaryResponseSmartyKey:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryResponseSmartyKey'
+    SecondaryCountResponseSearch:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryCountResponseSearch'
+    SecondaryCountResponseSmartyKey:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryCountResponseSmartyKey'
+
     BadRequest:
       description: >
         Bad Request (Malformed Payload): A GET request lacked a street field, or the request body of a POST request contained malformed JSON. (example: submitting an integer value in the ZIP Code field when a string is expected)
