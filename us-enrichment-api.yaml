@@ -1502,6 +1502,8 @@ components:
         zipcode:
           type: string
     RiskFields:
+      type: object
+      description: "The risk data fields are based on the FEMA National Risk Index (NRI) data definitions. Fields with zero values, or near zero values (to the fourth decimal place) are not returned and are considered to not be significant."
       properties:
         AGRIVALUE:
           type: string
