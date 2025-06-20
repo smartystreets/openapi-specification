@@ -22,7 +22,7 @@ paths:
       tags:
         - us-enrichment
       summary: Property Principal Lookup by Smartykey
-      description: 'Contains all property data attributes including tax assessor and recorder data. Recorder data will be last available financial transaction for the property'
+      description: 'Contains all property data attributes including tax assessor and recorder data. Recorder data will be last available financial transaction for the property.'
       security:
         - auth-id: [ ]
           auth-token: [ ]
@@ -53,6 +53,7 @@ paths:
       tags:
         - us-enrichment
       summary: Property Principal Lookup by Search Fields
+      description: 'Contains all property data attributes including tax assessor and recorder data. Recorder data will be last available financial transaction for the property.'
       security:
         - auth-id: [ ]
           auth-token: [ ]
@@ -87,6 +88,7 @@ paths:
       tags:
         - us-enrichment
       summary: Property Financial Lookup by Smartykey
+      description: "Dataset that contains historical financial data attributes pertaining to the property and property owner."
       security:
         - auth-id: []
           auth-token: []
@@ -117,6 +119,7 @@ paths:
       tags:
         - us-enrichment
       summary: Property Financial Lookup by Search Fields
+      description: "Dataset that contains historical financial data attributes pertaining to the property and property owner."
       security:
         - auth-id: [ ]
           auth-token: [ ]
@@ -211,6 +214,7 @@ paths:
       tags:
         - us-enrichment
       summary: Risk Lookup by Smartykey
+      description: "The risk data product returns FEMA NRI (National Risk Index) data associated with an address or SmartyKey. Fields with zero values, or near zero values (to the fourth decimal place) are not returned and are considered to not be significant."
       security:
         - auth-id: [ ]
           auth-token: [ ]
@@ -241,6 +245,7 @@ paths:
       tags:
         - us-enrichment
       summary: Risk Lookup by Search Fields
+      description: "The risk data product returns FEMA NRI (National Risk Index) data associated with an address or SmartyKey. Fields with zero values, or near zero values (to the fourth decimal place) are not returned and are considered to not be significant."
       security:
         - auth-id: [ ]
           auth-token: [ ]
@@ -396,6 +401,7 @@ components:
       required: true
       schema:
         type: string
+      description: "The unique id associated with the address you are looking for."
     dataset:
       name: dataset
       in: path
@@ -676,7 +682,7 @@ components:
           description: 'Indicates if the Census Place is incorporated or unincorporated.'
     GroupFinancialAttributes:
       type: object
-      description: group_financial
+      description: "Financial attributes in the Principal Dataset records."
       properties:
         assessed_improvement_percent:
           type: string
@@ -960,7 +966,7 @@ components:
           type: string
     GroupLocationAttributes:
       type: object
-      description: group_location
+      description: "Location attributes in the Principal Dataset records."
       properties:
         block1:
           type: string
@@ -1090,7 +1096,7 @@ components:
           type: string
     GroupStructuralAttributes:
       type: object
-      description: group_structural
+      description: "Structural attributes in the Principal Dataset records."
       properties:
         1st_floor_sqft:
           type: string
@@ -1492,6 +1498,7 @@ components:
             type: string
     MatchedAddress:
       type: object
+      description: "The address that the search matched to."
       properties:
         street:
           type: string
