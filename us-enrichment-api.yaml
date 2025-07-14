@@ -22,7 +22,7 @@ paths:
       tags:
         - us-enrichment
       summary: Property Principal Lookup by Smartykey
-      description: 'Contains all property data attributes including tax assessor and recorder data. Recorder data will be last available financial transaction for the property'
+      description: 'Contains all property data attributes including tax assessor and recorder data. Recorder data will be last available financial transaction for the property.'
       security:
         - auth-id: [ ]
           auth-token: [ ]
@@ -35,7 +35,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyPrincipalResponse'
+          $ref: '#/components/responses/PropertyPrincipalResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -53,6 +53,7 @@ paths:
       tags:
         - us-enrichment
       summary: Property Principal Lookup by Search Fields
+      description: 'Contains all property data attributes including tax assessor and recorder data. Recorder data will be last available financial transaction for the property.'
       security:
         - auth-id: [ ]
           auth-token: [ ]
@@ -69,7 +70,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyPrincipalResponse'
+          $ref: '#/components/responses/PropertyPrincipalResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -87,6 +88,7 @@ paths:
       tags:
         - us-enrichment
       summary: Property Financial Lookup by Smartykey
+      description: "Dataset that contains historical financial data attributes pertaining to the property and property owner."
       security:
         - auth-id: []
           auth-token: []
@@ -99,7 +101,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyFinancialResponse'
+          $ref: '#/components/responses/PropertyFinancialResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -113,27 +115,28 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
   '/lookup/search/property/financial':
-    parameters:
-      - $ref: '#/components/parameters/content-type'
-      - $ref: '#/components/parameters/etag'
-      - $ref: '#/components/parameters/include'
-      - $ref: '#/components/parameters/exclude'
-      - $ref: '#/components/parameters/freeform'
-      - $ref: '#/components/parameters/street'
-      - $ref: '#/components/parameters/city'
-      - $ref: '#/components/parameters/state'
-      - $ref: '#/components/parameters/zipcode'
     get:
+      tags:
+        - us-enrichment
       summary: Property Financial Lookup by Search Fields
+      description: "Dataset that contains historical financial data attributes pertaining to the property and property owner."
       security:
         - auth-id: [ ]
           auth-token: [ ]
         - embedded-key: [ ]
-      tags:
-        - us-enrichment
+      parameters:
+        - $ref: '#/components/parameters/content-type'
+        - $ref: '#/components/parameters/etag'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/exclude'
+        - $ref: '#/components/parameters/freeform'
+        - $ref: '#/components/parameters/street'
+        - $ref: '#/components/parameters/city'
+        - $ref: '#/components/parameters/state'
+        - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/PropertyFinancialResponse'
+          $ref: '#/components/responses/PropertyFinancialResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -161,7 +164,7 @@ paths:
       - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/GeoReferenceResponse'
+          $ref: '#/components/responses/GeoReferenceResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -193,7 +196,73 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/GeoReferenceResponse'
+          $ref: '#/components/responses/GeoReferenceResponseSearch'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '413':
+          $ref: '#/components/responses/RequestTooLarge'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  '/lookup/{smartykey}/risk':
+    get:
+      tags:
+        - us-enrichment
+      summary: Risk Lookup by Smartykey
+      description: "The risk data product returns FEMA NRI (National Risk Index) data associated with an address or SmartyKey. Fields with zero values, or near zero values (to the fourth decimal place) are not returned and are considered to not be significant."
+      security:
+        - auth-id: [ ]
+          auth-token: [ ]
+        - embedded-key: [ ]
+      parameters:
+        - $ref: '#/components/parameters/smartykey'
+        - $ref: '#/components/parameters/content-type'
+        - $ref: '#/components/parameters/etag'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/exclude'
+      responses:
+        '200':
+          $ref: '#/components/responses/RiskResponseSmartyKey'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '413':
+          $ref: '#/components/responses/RequestTooLarge'
+        '422':
+          $ref: '#/components/responses/UnprocessableContent'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  '/lookup/search/risk':
+    get:
+      tags:
+        - us-enrichment
+      summary: Risk Lookup by Search Fields
+      description: "The risk data product returns FEMA NRI (National Risk Index) data associated with an address or SmartyKey. Fields with zero values, or near zero values (to the fourth decimal place) are not returned and are considered to not be significant."
+      security:
+        - auth-id: [ ]
+          auth-token: [ ]
+        - embedded-key: [ ]
+      parameters:
+        - $ref: '#/components/parameters/content-type'
+        - $ref: '#/components/parameters/etag'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/exclude'
+        - $ref: '#/components/parameters/freeform'
+        - $ref: '#/components/parameters/street'
+        - $ref: '#/components/parameters/city'
+        - $ref: '#/components/parameters/state'
+        - $ref: '#/components/parameters/zipcode'
+      responses:
+        '200':
+          $ref: '#/components/responses/RiskResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -220,7 +289,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryResponse'
+          $ref: '#/components/responses/SecondaryResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -251,7 +320,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryResponse'
+          $ref: '#/components/responses/SecondaryResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -278,7 +347,7 @@ paths:
         - $ref: '#/components/parameters/exclude'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryCountResponse'
+          $ref: '#/components/responses/SecondaryCountResponseSmartyKey'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -309,7 +378,7 @@ paths:
         - $ref: '#/components/parameters/zipcode'
       responses:
         '200':
-          $ref: '#/components/responses/SecondaryCountResponse'
+          $ref: '#/components/responses/SecondaryCountResponseSearch'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -332,6 +401,7 @@ components:
       required: true
       schema:
         type: string
+      description: "The unique id associated with the address you are looking for."
     dataset:
       name: dataset
       in: path
@@ -396,28 +466,64 @@ components:
         type: string
       description: 'The ZIP Code. You may also need to provide values for other component search fields.'
   schemas:
-    PropertyPrincipalResponse:
-      allOf:
-        - $ref: '#/components/schemas/Response'
-        - type: object
+    PropertyPrincipalResponseSmartyKey:
       properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
         attributes:
           allOf:
             - $ref: '#/components/schemas/GroupStructuralAttributes'
             - $ref: '#/components/schemas/GroupLocationAttributes'
-    PropertyFinancialResponse:
-      allOf:
-        - $ref: '#/components/schemas/Response'
-        - type: object
+    PropertyPrincipalResponseSearch:
       properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
+        matched_address:
+         $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/GroupStructuralAttributes'
+            - $ref: '#/components/schemas/GroupLocationAttributes'
+    PropertyFinancialResponseSmartyKey:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
         attributes:
           allOf:
             - $ref: '#/components/schemas/GroupFinancialAttributes'
-    GeoReferenceResponse:
-      allOf:
-        - $ref: '#/components/schemas/Response'
-        - type: object
+    PropertyFinancialResponseSearch:
       properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_subset_name:
+          type: string
+        matched_address:
+          $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/GroupFinancialAttributes'
+    GeoReferenceResponseSmartyKey:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_set_version:
+          type: string
         attributes:
           type: object
           properties:
@@ -431,7 +537,61 @@ components:
               $ref: '#/components/schemas/CoreBasedStatArea'
             place:
               $ref: '#/components/schemas/Place'
-    SecondaryResponse:
+    GeoReferenceResponseSearch:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        data_set_version:
+          type: string
+        matched_address:
+          $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          type: object
+          properties:
+            census_block:
+              $ref: '#/components/schemas/CensusBlock'
+            census_county_division:
+              $ref: '#/components/schemas/CensusCountyDivision'
+            census_tract:
+              $ref: '#/components/schemas/CensusTract'
+            core_based_stat_area:
+              $ref: '#/components/schemas/CoreBasedStatArea'
+            place:
+              $ref: '#/components/schemas/Place'
+    RiskResponseSmartyKey:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/RiskFields'
+    RiskResponseSearch:
+      properties:
+        smarty_key:
+          type: string
+        data_set_name:
+          type: string
+        matched_address:
+          $ref: '#/components/schemas/MatchedAddress'
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/RiskFields'
+    SecondaryResponseSmartyKey:
+      type: object
+      properties:
+        smarty_key:
+          type: string
+        root_address:
+          $ref: '#/components/schemas/RootAddress'
+        secondaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Secondaries'
+    SecondaryResponseSearch:
       type: object
       properties:
         smarty_key:
@@ -444,7 +604,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Secondaries'
-    SecondaryCountResponse:
+    SecondaryCountResponseSmartyKey:
+      type: object
+      properties:
+        smarty_key:
+          type: string
+        count:
+          type: integer
+    SecondaryCountResponseSearch:
       type: object
       properties:
         smarty_key:
@@ -453,38 +620,6 @@ components:
           $ref: '#/components/schemas/MatchedAddress'
         count:
           type: integer
-    RootAddress:
-      type: object
-      properties:
-        secondary_count:
-          type: integer
-        smarty_key:
-          type: string
-        primary_number:
-          type: string
-        street_name:
-          type: string
-        street_suffix:
-          type: string
-        city_name:
-          type: string
-        state_abbreviation:
-          type: string
-        zipcode:
-          type: string
-        plus4_code:
-          type: string
-    Secondaries:
-      type: object
-      properties:
-        smarty_key:
-          type: string
-        secondary_designator:
-          type: string
-        secondary_number:
-          type: string
-        plus4_code:
-          type: string
     CensusBlock:
       type: object
       description: 'An id of up to 15 characters that identifies a geographical area for statistical analysis.'
@@ -547,7 +682,7 @@ components:
           description: 'Indicates if the Census Place is incorporated or unincorporated.'
     GroupFinancialAttributes:
       type: object
-      description: group_financial
+      description: "Financial attributes in the Principal Dataset records."
       properties:
         assessed_improvement_percent:
           type: string
@@ -831,7 +966,7 @@ components:
           type: string
     GroupLocationAttributes:
       type: object
-      description: group_location
+      description: "Location attributes in the Principal Dataset records."
       properties:
         block1:
           type: string
@@ -961,7 +1096,7 @@ components:
           type: string
     GroupStructuralAttributes:
       type: object
-      description: group_structural
+      description: "Structural attributes in the Principal Dataset records."
       properties:
         1st_floor_sqft:
           type: string
@@ -1363,6 +1498,7 @@ components:
             type: string
     MatchedAddress:
       type: object
+      description: "The address that the search matched to."
       properties:
         street:
           type: string
@@ -1372,21 +1508,1440 @@ components:
           type: string
         zipcode:
           type: string
-    Response:
+    RiskFields:
       type: object
-      description: properties in every response
+      description: "The risk data fields are based on the FEMA National Risk Index (NRI) data definitions. Fields with zero values, or near zero values (to the fourth decimal place) are not returned and are considered to not be significant."
+      properties:
+        AGRIVALUE:
+          type: string
+          description: "Agriculture Value ($)"
+        ALR_NPCTL:
+          type: string
+          description: "Expected Annual Loss Rate - National Percentile - Composite"
+        ALR_VALA:
+          type: string
+          description: "Expected Annual Loss Rate - Agriculture - Composite"
+        ALR_VALB:
+          type: string
+          description: "Expected Annual Loss Rate - Building - Composite"
+        ALR_VALP:
+          type: string
+          description: "Expected Annual Loss Rate - Population - Composite"
+        ALR_VRA_NPCTL:
+          type: string
+          description: "Social Vulnerability and Community Resilience Adjusted Expected Annual Loss Rate - National Percentile - Composite"
+        AREA:
+          type: string
+          description: "Area (sq mi)"
+        AVLN_AFREQ:
+          type: string
+          description: "Avalanche - Annualized Frequency"
+        AVLN_ALRB:
+          type: string
+          description: "Avalanche - Expected Annual Loss Rate - Building"
+        AVLN_ALRP:
+          type: string
+          description: "Avalanche - Expected Annual Loss Rate - Population"
+        AVLN_ALR_NPCTL:
+          type: string
+          description: "Avalanche - Expected Annual Loss Rate - National Percentile"
+        AVLN_EALB:
+          type: string
+          description: "Avalanche - Expected Annual Loss - Building Value"
+        AVLN_EALP:
+          type: string
+          description: "Avalanche - Expected Annual Loss - Population"
+        AVLN_EALPE:
+          type: string
+          description: "Avalanche - Expected Annual Loss - Population Equivalence"
+        AVLN_EALR:
+          type: string
+          description: "Avalanche - Expected Annual Loss Rating"
+        AVLN_EALS:
+          type: string
+          description: "Avalanche - Expected Annual Loss Score"
+        AVLN_EALT:
+          type: string
+          description: "Avalanche - Expected Annual Loss - Total"
+        AVLN_EVNTS:
+          type: string
+          description: "Avalanche - Number of Events"
+        AVLN_EXPB:
+          type: string
+          description: "Avalanche - Exposure - Building Value"
+        AVLN_EXPP:
+          type: string
+          description: "Avalanche - Exposure - Population"
+        AVLN_EXPPE:
+          type: string
+          description: "Avalanche - Exposure - Population Equivalence"
+        AVLN_EXPT:
+          type: string
+          description: "Avalanche - Exposure - Total"
+        AVLN_EXP_AREA:
+          type: string
+          description: "Avalanche - Exposure - Impacted Area (sq mi)"
+        AVLN_HLRB:
+          type: string
+          description: "Avalanche - Historic Loss Ratio - Buildings"
+        AVLN_HLRP:
+          type: string
+          description: "Avalanche - Historic Loss Ratio - Population"
+        AVLN_HLRR:
+          type: string
+          description: "Avalanche - Historic Loss Ratio - Total Rating"
+        AVLN_RISKR:
+          type: string
+          description: "Avalanche - Hazard Type Risk Index Rating"
+        AVLN_RISKS:
+          type: string
+          description: "Avalanche - Hazard Type Risk Index Score"
+        AVLN_RISKV:
+          type: string
+          description: "Avalanche - Hazard Type Risk Index Value"
+        BUILDVALUE:
+          type: string
+          description: "Building Value ($)"
+        CFLD_AFREQ:
+          type: string
+          description: "Coastal Flooding - Annualized Frequency"
+        CFLD_ALRB:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss Rate - Building"
+        CFLD_ALRP:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss Rate - Population"
+        CFLD_ALR_NPCTL:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss Rate - National Percentile"
+        CFLD_EALB:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss - Building Value"
+        CFLD_EALP:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss - Population"
+        CFLD_EALPE:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss - Population Equivalence"
+        CFLD_EALR:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss Rating"
+        CFLD_EALS:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss Score"
+        CFLD_EALT:
+          type: string
+          description: "Coastal Flooding - Expected Annual Loss - Total"
+        CFLD_EVNTS:
+          type: string
+          description: "Coastal Flooding - Number of Events"
+        CFLD_EXPB:
+          type: string
+          description: "Coastal Flooding - Exposure - Building Value"
+        CFLD_EXPP:
+          type: string
+          description: "Coastal Flooding - Exposure - Population"
+        CFLD_EXPPE:
+          type: string
+          description: "Coastal Flooding - Exposure - Population Equivalence"
+        CFLD_EXPT:
+          type: string
+          description: "Coastal Flooding - Exposure - Total"
+        CFLD_EXP_AREA:
+          type: string
+          description: "Coastal Flooding - Exposure - Impacted Area (sq mi)"
+        CFLD_HLRB:
+          type: string
+          description: "Coastal Flooding - Historic Loss Ratio - Buildings"
+        CFLD_HLRP:
+          type: string
+          description: "Coastal Flooding - Historic Loss Ratio - Population"
+        CFLD_HLRR:
+          type: string
+          description: "Coastal Flooding - Historic Loss Ratio - Total Rating"
+        CFLD_RISKR:
+          type: string
+          description: "Coastal Flooding - Hazard Type Risk Index Rating"
+        CFLD_RISKS:
+          type: string
+          description: "Coastal Flooding - Hazard Type Risk Index Score"
+        CFLD_RISKV:
+          type: string
+          description: "Coastal Flooding - Hazard Type Risk Index Value"
+        COUNTY:
+          type: string
+          description: "County Name"
+        COUNTYFIPS:
+          type: string
+          description: "County FIPS Code"
+        COUNTYTYPE:
+          type: string
+          description: "County Type"
+        CRF_VALUE:
+          type: string
+          description: "Community Risk Factor - Value"
+        CWAV_AFREQ:
+          type: string
+          description: "Cold Wave - Annualized Frequency"
+        CWAV_ALRA:
+          type: string
+          description: "Cold Wave - Expected Annual Loss Rate - Agriculture"
+        CWAV_ALRB:
+          type: string
+          description: "Cold Wave - Expected Annual Loss Rate - Building"
+        CWAV_ALRP:
+          type: string
+          description: "Cold Wave - Expected Annual Loss Rate - Population"
+        CWAV_ALR_NPCTL:
+          type: string
+          description: "Cold Wave - Expected Annual Loss Rate - National Percentile"
+        CWAV_EALA:
+          type: string
+          description: "Cold Wave - Expected Annual Loss - Agriculture Value"
+        CWAV_EALB:
+          type: string
+          description: "Cold Wave - Expected Annual Loss - Building Value"
+        CWAV_EALP:
+          type: string
+          description: "Cold Wave - Expected Annual Loss - Population"
+        CWAV_EALPE:
+          type: string
+          description: "Cold Wave - Expected Annual Loss - Population Equivalence"
+        CWAV_EALR:
+          type: string
+          description: "Cold Wave - Expected Annual Loss Rating"
+        CWAV_EALS:
+          type: string
+          description: "Cold Wave - Expected Annual Loss Score"
+        CWAV_EALT:
+          type: string
+          description: "Cold Wave - Expected Annual Loss - Total"
+        CWAV_EVNTS:
+          type: string
+          description: "Cold Wave - Number of Events"
+        CWAV_EXPA:
+          type: string
+          description: "Cold Wave - Exposure - Agriculture Value"
+        CWAV_EXPB:
+          type: string
+          description: "Cold Wave - Exposure - Building Value"
+        CWAV_EXPP:
+          type: string
+          description: "Cold Wave - Exposure - Population"
+        CWAV_EXPPE:
+          type: string
+          description: "Cold Wave - Exposure - Population Equivalence"
+        CWAV_EXPT:
+          type: string
+          description: "Cold Wave - Exposure - Total"
+        CWAV_EXP_AREA:
+          type: string
+          description: "Cold Wave - Exposure - Impacted Area (sq mi)"
+        CWAV_HLRA:
+          type: string
+          description: "Cold Wave - Historic Loss Ratio - Agriculture"
+        CWAV_HLRB:
+          type: string
+          description: "Cold Wave - Historic Loss Ratio - Buildings"
+        CWAV_HLRP:
+          type: string
+          description: "Cold Wave - Historic Loss Ratio - Population"
+        CWAV_HLRR:
+          type: string
+          description: "Cold Wave - Historic Loss Ratio - Total Rating"
+        CWAV_RISKR:
+          type: string
+          description: "Cold Wave - Hazard Type Risk Index Rating"
+        CWAV_RISKS:
+          type: string
+          description: "Cold Wave - Hazard Type Risk Index Score"
+        CWAV_RISKV:
+          type: string
+          description: "Cold Wave - Hazard Type Risk Index Value"
+        DRGT_AFREQ:
+          type: string
+          description: "Drought - Annualized Frequency"
+        DRGT_ALRA:
+          type: string
+          description: "Drought - Expected Annual Loss Rate - Agriculture"
+        DRGT_ALR_NPCTL:
+          type: string
+          description: "Drought - Expected Annual Loss Rate - National Percentile"
+        DRGT_EALA:
+          type: string
+          description: "Drought - Expected Annual Loss - Agriculture Value"
+        DRGT_EALR:
+          type: string
+          description: "Drought - Expected Annual Loss Rating"
+        DRGT_EALS:
+          type: string
+          description: "Drought - Expected Annual Loss Score"
+        DRGT_EALT:
+          type: string
+          description: "Drought - Expected Annual Loss - Total"
+        DRGT_EVNTS:
+          type: string
+          description: "Drought - Number of Events"
+        DRGT_EXPA:
+          type: string
+          description: "Drought - Exposure - Agriculture Value"
+        DRGT_EXPT:
+          type: string
+          description: "Drought - Exposure - Total"
+        DRGT_EXP_AREA:
+          type: string
+          description: "Drought - Exposure - Impacted Area (sq mi)"
+        DRGT_HLRA:
+          type: string
+          description: "Drought - Historic Loss Ratio - Agriculture"
+        DRGT_HLRR:
+          type: string
+          description: "Drought - Historic Loss Ratio - Total Rating"
+        DRGT_RISKR:
+          type: string
+          description: "Drought - Hazard Type Risk Index Rating"
+        DRGT_RISKS:
+          type: string
+          description: "Drought - Hazard Type Risk Index Score"
+        DRGT_RISKV:
+          type: string
+          description: "Drought - Hazard Type Risk Index Value"
+        EAL_RATNG:
+          type: string
+          description: "Expected Annual Loss - Rating - Composite"
+        EAL_SCORE:
+          type: string
+          description: "Expected Annual Loss - Score - Composite"
+        EAL_SPCTL:
+          type: string
+          description: "Expected Annual Loss - State Percentile - Composite"
+        EAL_VALA:
+          type: string
+          description: "Expected Annual Loss - Agriculture Value - Composite"
+        EAL_VALB:
+          type: string
+          description: "Expected Annual Loss - Building Value - Composite"
+        EAL_VALP:
+          type: string
+          description: "Expected Annual Loss - Population - Composite"
+        EAL_VALPE:
+          type: string
+          description: "Expected Annual Loss - Population Equivalence - Composite"
+        EAL_VALT:
+          type: string
+          description: "Expected Annual Loss - Total - Composite"
+        ERQK_AFREQ:
+          type: string
+          description: "Earthquake - Annualized Frequency"
+        ERQK_ALRB:
+          type: string
+          description: "Earthquake - Expected Annual Loss Rate - Building"
+        ERQK_ALRP:
+          type: string
+          description: "Earthquake - Expected Annual Loss Rate - Population"
+        ERQK_ALR_NPCTL:
+          type: string
+          description: "Earthquake - Expected Annual Loss Rate - National Percentile"
+        ERQK_EALB:
+          type: string
+          description: "Earthquake - Expected Annual Loss - Building Value"
+        ERQK_EALP:
+          type: string
+          description: "Earthquake - Expected Annual Loss - Population"
+        ERQK_EALPE:
+          type: string
+          description: "Earthquake - Expected Annual Loss - Population Equivalence"
+        ERQK_EALR:
+          type: string
+          description: "Earthquake - Expected Annual Loss Rating"
+        ERQK_EALS:
+          type: string
+          description: "Earthquake - Expected Annual Loss Score"
+        ERQK_EALT:
+          type: string
+          description: "Earthquake - Expected Annual Loss - Total"
+        ERQK_EVNTS:
+          type: string
+          description: "Earthquake - Number of Events"
+        ERQK_EXPB:
+          type: string
+          description: "Earthquake - Exposure - Building Value"
+        ERQK_EXPP:
+          type: string
+          description: "Earthquake - Exposure - Population"
+        ERQK_EXPPE:
+          type: string
+          description: "Earthquake - Exposure - Population Equivalence"
+        ERQK_EXPT:
+          type: string
+          description: "Earthquake - Exposure - Total"
+        ERQK_EXP_AREA:
+          type: string
+          description: "Earthquake - Exposure - Impacted Area (sq mi)"
+        ERQK_HLRB:
+          type: string
+          description: "Earthquake - Historic Loss Ratio - Buildings"
+        ERQK_HLRP:
+          type: string
+          description: "Earthquake - Historic Loss Ratio - Population"
+        ERQK_HLRR:
+          type: string
+          description: "Earthquake - Historic Loss Ratio - Total Rating"
+        ERQK_RISKR:
+          type: string
+          description: "Earthquake - Hazard Type Risk Index Rating"
+        ERQK_RISKS:
+          type: string
+          description: "Earthquake - Hazard Type Risk Index Score"
+        ERQK_RISKV:
+          type: string
+          description: "Earthquake - Hazard Type Risk Index Value"
+        HAIL_AFREQ:
+          type: string
+          description: "Hail - Annualized Frequency"
+        HAIL_ALRA:
+          type: string
+          description: "Hail - Expected Annual Loss Rate - Agriculture"
+        HAIL_ALRB:
+          type: string
+          description: "Hail - Expected Annual Loss Rate - Building"
+        HAIL_ALRP:
+          type: string
+          description: "Hail - Expected Annual Loss Rate - Population"
+        HAIL_ALR_NPCTL:
+          type: string
+          description: "Hail - Expected Annual Loss Rate - National Percentile"
+        HAIL_EALA:
+          type: string
+          description: "Hail - Expected Annual Loss - Agriculture Value"
+        HAIL_EALB:
+          type: string
+          description: "Hail - Expected Annual Loss - Building Value"
+        HAIL_EALP:
+          type: string
+          description: "Hail - Expected Annual Loss - Population"
+        HAIL_EALPE:
+          type: string
+          description: "Hail - Expected Annual Loss - Population Equivalence"
+        HAIL_EALR:
+          type: string
+          description: "Hail - Expected Annual Loss Rating"
+        HAIL_EALS:
+          type: string
+          description: "Hail - Expected Annual Loss Score"
+        HAIL_EALT:
+          type: string
+          description: "Hail - Expected Annual Loss - Total"
+        HAIL_EVNTS:
+          type: string
+          description: "Hail - Number of Events"
+        HAIL_EXPA:
+          type: string
+          description: "Hail - Exposure - Agriculture Value"
+        HAIL_EXPB:
+          type: string
+          description: "Hail - Exposure - Building Value"
+        HAIL_EXPP:
+          type: string
+          description: "Hail - Exposure - Population"
+        HAIL_EXPPE:
+          type: string
+          description: "Hail - Exposure - Population Equivalence"
+        HAIL_EXPT:
+          type: string
+          description: "Hail - Exposure - Total"
+        HAIL_EXP_AREA:
+          type: string
+          description: "Hail - Exposure - Impacted Area (sq mi)"
+        HAIL_HLRA:
+          type: string
+          description: "Hail - Historic Loss Ratio - Agriculture"
+        HAIL_HLRB:
+          type: string
+          description: "Hail - Historic Loss Ratio - Buildings"
+        HAIL_HLRP:
+          type: string
+          description: "Hail - Historic Loss Ratio - Population"
+        HAIL_HLRR:
+          type: string
+          description: "Hail - Historic Loss Ratio - Total Rating"
+        HAIL_RISKR:
+          type: string
+          description: "Hail - Hazard Type Risk Index Rating"
+        HAIL_RISKS:
+          type: string
+          description: "Hail - Hazard Type Risk Index Score"
+        HAIL_RISKV:
+          type: string
+          description: "Hail - Hazard Type Risk Index Value"
+        HRCN_AFREQ:
+          type: string
+          description: "Hurricane - Annualized Frequency"
+        HRCN_ALRA:
+          type: string
+          description: "Hurricane - Expected Annual Loss Rate - Agriculture"
+        HRCN_ALRB:
+          type: string
+          description: "Hurricane - Expected Annual Loss Rate - Building"
+        HRCN_ALRP:
+          type: string
+          description: "Hurricane - Expected Annual Loss Rate - Population"
+        HRCN_ALR_NPCTL:
+          type: string
+          description: "Hurricane - Expected Annual Loss Rate - National Percentile"
+        HRCN_EALA:
+          type: string
+          description: "Hurricane - Expected Annual Loss - Agriculture Value"
+        HRCN_EALB:
+          type: string
+          description: "Hurricane - Expected Annual Loss - Building Value"
+        HRCN_EALP:
+          type: string
+          description: "Hurricane - Expected Annual Loss - Population"
+        HRCN_EALPE:
+          type: string
+          description: "Hurricane - Expected Annual Loss - Population Equivalence"
+        HRCN_EALR:
+          type: string
+          description: "Hurricane - Expected Annual Loss Rating"
+        HRCN_EALS:
+          type: string
+          description: "Hurricane - Expected Annual Loss Score"
+        HRCN_EALT:
+          type: string
+          description: "Hurricane - Expected Annual Loss - Total"
+        HRCN_EVNTS:
+          type: string
+          description: "Hurricane - Number of Events"
+        HRCN_EXPA:
+          type: string
+          description: "Hurricane - Exposure - Agriculture Value"
+        HRCN_EXPB:
+          type: string
+          description: "Hurricane - Exposure - Building Value"
+        HRCN_EXPP:
+          type: string
+          description: "Hurricane - Exposure - Population"
+        HRCN_EXPPE:
+          type: string
+          description: "Hurricane - Exposure - Population Equivalence"
+        HRCN_EXPT:
+          type: string
+          description: "Hurricane - Exposure - Total"
+        HRCN_EXP_AREA:
+          type: string
+          description: "Hurricane - Exposure - Impacted Area (sq mi)"
+        HRCN_HLRA:
+          type: string
+          description: "Hurricane - Historic Loss Ratio - Agriculture"
+        HRCN_HLRB:
+          type: string
+          description: "Hurricane - Historic Loss Ratio - Buildings"
+        HRCN_HLRP:
+          type: string
+          description: "Hurricane - Historic Loss Ratio - Population"
+        HRCN_HLRR:
+          type: string
+          description: "Hurricane - Historic Loss Ratio - Total Rating"
+        HRCN_RISKR:
+          type: string
+          description: "Hurricane - Hazard Type Risk Index Rating"
+        HRCN_RISKS:
+          type: string
+          description: "Hurricane - Hazard Type Risk Index Score"
+        HRCN_RISKV:
+          type: string
+          description: "Hurricane - Hazard Type Risk Index Value"
+        HWAV_AFREQ:
+          type: string
+          description: "Heat Wave - Annualized Frequency"
+        HWAV_ALRA:
+          type: string
+          description: "Heat Wave - Expected Annual Loss Rate - Agriculture"
+        HWAV_ALRB:
+          type: string
+          description: "Heat Wave - Expected Annual Loss Rate - Building"
+        HWAV_ALRP:
+          type: string
+          description: "Heat Wave - Expected Annual Loss Rate - Population"
+        HWAV_ALR_NPCTL:
+          type: string
+          description: "Heat Wave - Expected Annual Loss Rate - National Percentile"
+        HWAV_EALA:
+          type: string
+          description: "Heat Wave - Expected Annual Loss - Agriculture Value"
+        HWAV_EALB:
+          type: string
+          description: "Heat Wave - Expected Annual Loss - Building Value"
+        HWAV_EALP:
+          type: string
+          description: "Heat Wave - Expected Annual Loss - Population"
+        HWAV_EALPE:
+          type: string
+          description: "Heat Wave - Expected Annual Loss - Population Equivalence"
+        HWAV_EALR:
+          type: string
+          description: "Heat Wave - Expected Annual Loss Rating"
+        HWAV_EALS:
+          type: string
+          description: "Heat Wave - Expected Annual Loss Score"
+        HWAV_EALT:
+          type: string
+          description: "Heat Wave - Expected Annual Loss - Total"
+        HWAV_EVNTS:
+          type: string
+          description: "Heat Wave - Number of Events"
+        HWAV_EXPA:
+          type: string
+          description: "Heat Wave - Exposure - Agriculture Value"
+        HWAV_EXPB:
+          type: string
+          description: "Heat Wave - Exposure - Building Value"
+        HWAV_EXPP:
+          type: string
+          description: "Heat Wave - Exposure - Population"
+        HWAV_EXPPE:
+          type: string
+          description: "Heat Wave - Exposure - Population Equivalence"
+        HWAV_EXPT:
+          type: string
+          description: "Heat Wave - Exposure - Total"
+        HWAV_EXP_AREA:
+          type: string
+          description: "Heat Wave - Exposure - Impacted Area (sq mi)"
+        HWAV_HLRA:
+          type: string
+          description: "Heat Wave - Historic Loss Ratio - Agriculture"
+        HWAV_HLRB:
+          type: string
+          description: "Heat Wave - Historic Loss Ratio - Buildings"
+        HWAV_HLRP:
+          type: string
+          description: "Heat Wave - Historic Loss Ratio - Population"
+        HWAV_HLRR:
+          type: string
+          description: "Heat Wave - Historic Loss Ratio - Total Rating"
+        HWAV_RISKR:
+          type: string
+          description: "Heat Wave - Hazard Type Risk Index Rating"
+        HWAV_RISKS:
+          type: string
+          description: "Heat Wave - Hazard Type Risk Index Score"
+        HWAV_RISKV:
+          type: string
+          description: "Heat Wave - Hazard Type Risk Index Value"
+        ISTM_AFREQ:
+          type: string
+          description: "Ice Storm - Annualized Frequency"
+        ISTM_ALRB:
+          type: string
+          description: "Ice Storm - Expected Annual Loss Rate - Building"
+        ISTM_ALRP:
+          type: string
+          description: "Ice Storm - Expected Annual Loss Rate - Population"
+        ISTM_ALR_NPCTL:
+          type: string
+          description: "Ice Storm - Expected Annual Loss Rate - National Percentile"
+        ISTM_EALB:
+          type: string
+          description: "Ice Storm - Expected Annual Loss - Building Value"
+        ISTM_EALP:
+          type: string
+          description: "Ice Storm - Expected Annual Loss - Population"
+        ISTM_EALPE:
+          type: string
+          description: "Ice Storm - Expected Annual Loss - Population Equivalence"
+        ISTM_EALR:
+          type: string
+          description: "Ice Storm - Expected Annual Loss Rating"
+        ISTM_EALS:
+          type: string
+          description: "Ice Storm - Expected Annual Loss Score"
+        ISTM_EALT:
+          type: string
+          description: "Ice Storm - Expected Annual Loss - Total"
+        ISTM_EVNTS:
+          type: string
+          description: "Ice Storm - Number of Events"
+        ISTM_EXPB:
+          type: string
+          description: "Ice Storm - Exposure - Building Value"
+        ISTM_EXPP:
+          type: string
+          description: "Ice Storm - Exposure - Population"
+        ISTM_EXPPE:
+          type: string
+          description: "Ice Storm - Exposure - Population Equivalence"
+        ISTM_EXPT:
+          type: string
+          description: "Ice Storm - Exposure - Total"
+        ISTM_EXP_AREA:
+          type: string
+          description: "Ice Storm - Exposure - Impacted Area (sq mi)"
+        ISTM_HLRB:
+          type: string
+          description: "Ice Storm - Historic Loss Ratio - Buildings"
+        ISTM_HLRP:
+          type: string
+          description: "Ice Storm - Historic Loss Ratio - Population"
+        ISTM_HLRR:
+          type: string
+          description: "Ice Storm - Historic Loss Ratio - Total Rating"
+        ISTM_RISKR:
+          type: string
+          description: "Ice Storm - Hazard Type Risk Index Rating"
+        ISTM_RISKS:
+          type: string
+          description: "Ice Storm - Hazard Type Risk Index Score"
+        ISTM_RISKV:
+          type: string
+          description: "Ice Storm - Hazard Type Risk Index Value"
+        LNDS_AFREQ:
+          type: string
+          description: "Landslide - Annualized Frequency"
+        LNDS_ALRB:
+          type: string
+          description: "Landslide - Expected Annual Loss Rate - Building"
+        LNDS_ALRP:
+          type: string
+          description: "Landslide - Expected Annual Loss Rate - Population"
+        LNDS_ALR_NPCTL:
+          type: string
+          description: "Landslide - Expected Annual Loss Rate - National Percentile"
+        LNDS_EALB:
+          type: string
+          description: "Landslide - Expected Annual Loss - Building Value"
+        LNDS_EALP:
+          type: string
+          description: "Landslide - Expected Annual Loss - Population"
+        LNDS_EALPE:
+          type: string
+          description: "Landslide - Expected Annual Loss - Population Equivalence"
+        LNDS_EALR:
+          type: string
+          description: "Landslide - Expected Annual Loss Rating"
+        LNDS_EALS:
+          type: string
+          description: "Landslide - Expected Annual Loss Score"
+        LNDS_EALT:
+          type: string
+          description: "Landslide - Expected Annual Loss - Total"
+        LNDS_EVNTS:
+          type: string
+          description: "Landslide - Number of Events"
+        LNDS_EXPB:
+          type: string
+          description: "Landslide - Exposure - Building Value"
+        LNDS_EXPP:
+          type: string
+          description: "Landslide - Exposure - Population"
+        LNDS_EXPPE:
+          type: string
+          description: "Landslide - Exposure - Population Equivalence"
+        LNDS_EXPT:
+          type: string
+          description: "Landslide - Exposure - Total"
+        LNDS_EXP_AREA:
+          type: string
+          description: "Landslide - Exposure - Impacted Area (sq mi)"
+        LNDS_HLRB:
+          type: string
+          description: "Landslide - Historic Loss Ratio - Buildings"
+        LNDS_HLRP:
+          type: string
+          description: "Landslide - Historic Loss Ratio - Population"
+        LNDS_HLRR:
+          type: string
+          description: "Landslide - Historic Loss Ratio - Total Rating"
+        LNDS_RISKR:
+          type: string
+          description: "Landslide - Hazard Type Risk Index Rating"
+        LNDS_RISKS:
+          type: string
+          description: "Landslide - Hazard Type Risk Index Score"
+        LNDS_RISKV:
+          type: string
+          description: "Landslide - Hazard Type Risk Index Value"
+        LTNG_AFREQ:
+          type: string
+          description: "Lightning - Annualized Frequency"
+        LTNG_ALRB:
+          type: string
+          description: "Lightning - Expected Annual Loss Rate - Building"
+        LTNG_ALRP:
+          type: string
+          description: "Lightning - Expected Annual Loss Rate - Population"
+        LTNG_ALR_NPCTL:
+          type: string
+          description: "Lightning - Expected Annual Loss Rate - National Percentile"
+        LTNG_EALB:
+          type: string
+          description: "Lightning - Expected Annual Loss - Building Value"
+        LTNG_EALP:
+          type: string
+          description: "Lightning - Expected Annual Loss - Population"
+        LTNG_EALPE:
+          type: string
+          description: "Lightning - Expected Annual Loss - Population Equivalence"
+        LTNG_EALR:
+          type: string
+          description: "Lightning - Expected Annual Loss Rating"
+        LTNG_EALS:
+          type: string
+          description: "Lightning - Expected Annual Loss Score"
+        LTNG_EALT:
+          type: string
+          description: "Lightning - Expected Annual Loss - Total"
+        LTNG_EVNTS:
+          type: string
+          description: "Lightning - Number of Events"
+        LTNG_EXPB:
+          type: string
+          description: "Lightning - Exposure - Building Value"
+        LTNG_EXPP:
+          type: string
+          description: "Lightning - Exposure - Population"
+        LTNG_EXPPE:
+          type: string
+          description: "Lightning - Exposure - Population Equivalence"
+        LTNG_EXPT:
+          type: string
+          description: "Lightning - Exposure - Total"
+        LTNG_EXP_AREA:
+          type: string
+          description: "Lightning - Exposure - Impacted Area (sq mi)"
+        LTNG_HLRB:
+          type: string
+          description: "Lightning - Historic Loss Ratio - Buildings"
+        LTNG_HLRP:
+          type: string
+          description: "Lightning - Historic Loss Ratio - Population"
+        LTNG_HLRR:
+          type: string
+          description: "Lightning - Historic Loss Ratio - Total Rating"
+        LTNG_RISKR:
+          type: string
+          description: "Lightning - Hazard Type Risk Index Rating"
+        LTNG_RISKS:
+          type: string
+          description: "Lightning - Hazard Type Risk Index Score"
+        LTNG_RISKV:
+          type: string
+          description: "Lightning - Hazard Type Risk Index Value"
+        NRI_VER:
+          type: string
+          description: "National Risk Index Version"
+        POPULATION:
+          type: string
+          description: "Population (2020)"
+        RESL_RATNG:
+          type: string
+          description: "Community Resilience - Rating"
+        RESL_SCORE:
+          type: string
+          description: "Community Resilience - Score"
+        RESL_SPCTL:
+          type: string
+          description: "Community Resilience - State Percentile"
+        RESL_VALUE:
+          type: string
+          description: "Community Resilience - Value"
+        RFLD_AFREQ:
+          type: string
+          description: "Riverine Flooding - Annualized Frequency"
+        RFLD_ALRA:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss Rate - Agriculture"
+        RFLD_ALRB:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss Rate - Building"
+        RFLD_ALRP:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss Rate - Population"
+        RFLD_ALR_NPCTL:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss Rate - National Percentile"
+        RFLD_EALA:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss - Agriculture Value"
+        RFLD_EALB:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss - Building Value"
+        RFLD_EALP:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss - Population"
+        RFLD_EALPE:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss - Population Equivalence"
+        RFLD_EALR:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss Rating"
+        RFLD_EALS:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss Score"
+        RFLD_EALT:
+          type: string
+          description: "Riverine Flooding - Expected Annual Loss - Total"
+        RFLD_EVNTS:
+          type: string
+          description: "Riverine Flooding - Number of Events"
+        RFLD_EXPA:
+          type: string
+          description: "Riverine Flooding - Exposure - Agriculture Value"
+        RFLD_EXPB:
+          type: string
+          description: "Riverine Flooding - Exposure - Building Value"
+        RFLD_EXPP:
+          type: string
+          description: "Riverine Flooding - Exposure - Population"
+        RFLD_EXPPE:
+          type: string
+          description: "Riverine Flooding - Exposure - Population Equivalence"
+        RFLD_EXPT:
+          type: string
+          description: "Riverine Flooding - Exposure - Total"
+        RFLD_EXP_AREA:
+          type: string
+          description: "Riverine Flooding - Exposure - Impacted Area (sq mi)"
+        RFLD_HLRA:
+          type: string
+          description: "Riverine Flooding - Historic Loss Ratio - Agriculture"
+        RFLD_HLRB:
+          type: string
+          description: "Riverine Flooding - Historic Loss Ratio - Buildings"
+        RFLD_HLRP:
+          type: string
+          description: "Riverine Flooding - Historic Loss Ratio - Population"
+        RFLD_HLRR:
+          type: string
+          description: "Riverine Flooding - Historic Loss Ratio - Total Rating"
+        RFLD_RISKR:
+          type: string
+          description: "Riverine Flooding - Hazard Type Risk Index Rating"
+        RFLD_RISKS:
+          type: string
+          description: "Riverine Flooding - Hazard Type Risk Index Score"
+        RFLD_RISKV:
+          type: string
+          description: "Riverine Flooding - Hazard Type Risk Index Value"
+        RISK_RATNG:
+          type: string
+          description: "National Risk Index - Rating - Composite"
+        RISK_SCORE:
+          type: string
+          description: "National Risk Index - Score - Composite"
+        RISK_SPCTL:
+          type: string
+          description: "National Risk Index - State Percentile - Composite"
+        RISK_VALUE:
+          type: string
+          description: "National Risk Index - Value - Composite"
+        SOVI_RATNG:
+          type: string
+          description: "Social Vulnerability - Rating"
+        SOVI_SCORE:
+          type: string
+          description: "Social Vulnerability - Score"
+        SOVI_SPCTL:
+          type: string
+          description: "Social Vulnerability - State Percentile"
+        STATE:
+          type: string
+          description: "State Name"
+        STATEABBRV:
+          type: string
+          description: "State Name Abbreviation"
+        STATEFIPS:
+          type: string
+          description: "State FIPS Code"
+        STCOFIPS:
+          type: string
+          description: "State-County FIPS Code"
+        SWND_AFREQ:
+          type: string
+          description: "Strong Wind - Annualized Frequency"
+        SWND_ALRA:
+          type: string
+          description: "Strong Wind - Expected Annual Loss Rate - Agriculture"
+        SWND_ALRB:
+          type: string
+          description: "Strong Wind - Expected Annual Loss Rate - Building"
+        SWND_ALRP:
+          type: string
+          description: "Strong Wind - Expected Annual Loss Rate - Population"
+        SWND_ALR_NPCTL:
+          type: string
+          description: "Strong Wind - Expected Annual Loss Rate - National Percentile"
+        SWND_EALA:
+          type: string
+          description: "Strong Wind - Expected Annual Loss - Agriculture Value"
+        SWND_EALB:
+          type: string
+          description: "Strong Wind - Expected Annual Loss - Building Value"
+        SWND_EALP:
+          type: string
+          description: "Strong Wind - Expected Annual Loss - Population"
+        SWND_EALPE:
+          type: string
+          description: "Strong Wind - Expected Annual Loss - Population Equivalence"
+        SWND_EALR:
+          type: string
+          description: "Strong Wind - Expected Annual Loss Rating"
+        SWND_EALS:
+          type: string
+          description: "Strong Wind - Expected Annual Loss Score"
+        SWND_EALT:
+          type: string
+          description: "Strong Wind - Expected Annual Loss - Total"
+        SWND_EVNTS:
+          type: string
+          description: "Strong Wind - Number of Events"
+        SWND_EXPA:
+          type: string
+          description: "Strong Wind - Exposure - Agriculture Value"
+        SWND_EXPB:
+          type: string
+          description: "Strong Wind - Exposure - Building Value"
+        SWND_EXPP:
+          type: string
+          description: "Strong Wind - Exposure - Population"
+        SWND_EXPPE:
+          type: string
+          description: "Strong Wind - Exposure - Population Equivalence"
+        SWND_EXPT:
+          type: string
+          description: "Strong Wind - Exposure - Total"
+        SWND_EXP_AREA:
+          type: string
+          description: "Strong Wind - Exposure - Impacted Area (sq mi)"
+        SWND_HLRA:
+          type: string
+          description: "Strong Wind - Historic Loss Ratio - Agriculture"
+        SWND_HLRB:
+          type: string
+          description: "Strong Wind - Historic Loss Ratio - Buildings"
+        SWND_HLRP:
+          type: string
+          description: "Strong Wind - Historic Loss Ratio - Population"
+        SWND_HLRR:
+          type: string
+          description: "Strong Wind - Historic Loss Ratio - Total Rating"
+        SWND_RISKR:
+          type: string
+          description: "Strong Wind - Hazard Type Risk Index Rating"
+        SWND_RISKS:
+          type: string
+          description: "Strong Wind - Hazard Type Risk Index Score"
+        SWND_RISKV:
+          type: string
+          description: "Strong Wind - Hazard Type Risk Index Value"
+        TRACT:
+          type: string
+          description: "Census Tract"
+        TRACTFIPS:
+          type: string
+          description: "Census Tract FIPS Code"
+        TRND_AFREQ:
+          type: string
+          description: "Tornado - Annualized Frequency"
+        TRND_ALRA:
+          type: string
+          description: "Tornado - Expected Annual Loss Rate - Agriculture"
+        TRND_ALRB:
+          type: string
+          description: "Tornado - Expected Annual Loss Rate - Building"
+        TRND_ALRP:
+          type: string
+          description: "Tornado - Expected Annual Loss Rate - Population"
+        TRND_ALR_NPCTL:
+          type: string
+          description: "Tornado - Expected Annual Loss Rate - National Percentile"
+        TRND_EALA:
+          type: string
+          description: "Tornado - Expected Annual Loss - Agriculture Value"
+        TRND_EALB:
+          type: string
+          description: "Tornado - Expected Annual Loss - Building Value"
+        TRND_EALP:
+          type: string
+          description: "Tornado - Expected Annual Loss - Population"
+        TRND_EALPE:
+          type: string
+          description: "Tornado - Expected Annual Loss - Population Equivalence"
+        TRND_EALR:
+          type: string
+          description: "Tornado - Expected Annual Loss Rating"
+        TRND_EALS:
+          type: string
+          description: "Tornado - Expected Annual Loss Score"
+        TRND_EALT:
+          type: string
+          description: "Tornado - Expected Annual Loss - Total"
+        TRND_EVNTS:
+          type: string
+          description: "Tornado - Number of Events"
+        TRND_EXPA:
+          type: string
+          description: "Tornado - Exposure - Agriculture Value"
+        TRND_EXPB:
+          type: string
+          description: "Tornado - Exposure - Building Value"
+        TRND_EXPP:
+          type: string
+          description: "Tornado - Exposure - Population"
+        TRND_EXPPE:
+          type: string
+          description: "Tornado - Exposure - Population Equivalence"
+        TRND_EXPT:
+          type: string
+          description: "Tornado - Exposure - Total"
+        TRND_EXP_AREA:
+          type: string
+          description: "Tornado - Exposure - Impacted Area (sq mi)"
+        TRND_HLRA:
+          type: string
+          description: "Tornado - Historic Loss Ratio - Agriculture"
+        TRND_HLRB:
+          type: string
+          description: "Tornado - Historic Loss Ratio - Buildings"
+        TRND_HLRP:
+          type: string
+          description: "Tornado - Historic Loss Ratio - Population"
+        TRND_HLRR:
+          type: string
+          description: "Tornado - Historic Loss Ratio - Total Rating"
+        TRND_RISKR:
+          type: string
+          description: "Tornado - Hazard Type Risk Index Rating"
+        TRND_RISKS:
+          type: string
+          description: "Tornado - Hazard Type Risk Index Score"
+        TRND_RISKV:
+          type: string
+          description: "Tornado - Hazard Type Risk Index Value"
+        TSUN_AFREQ:
+          type: string
+          description: "Tsunami - Annualized Frequency"
+        TSUN_ALRB:
+          type: string
+          description: "Tsunami - Expected Annual Loss Rate - Building"
+        TSUN_ALRP:
+          type: string
+          description: "Tsunami - Expected Annual Loss Rate - Population"
+        TSUN_ALR_NPCTL:
+          type: string
+          description: "Tsunami - Expected Annual Loss Rate - National Percentile"
+        TSUN_EALB:
+          type: string
+          description: "Tsunami - Expected Annual Loss - Building Value"
+        TSUN_EALP:
+          type: string
+          description: "Tsunami - Expected Annual Loss - Population"
+        TSUN_EALPE:
+          type: string
+          description: "Tsunami - Expected Annual Loss - Population Equivalence"
+        TSUN_EALR:
+          type: string
+          description: "Tsunami - Expected Annual Loss Rating"
+        TSUN_EALS:
+          type: string
+          description: "Tsunami - Expected Annual Loss Score"
+        TSUN_EALT:
+          type: string
+          description: "Tsunami - Expected Annual Loss - Total"
+        TSUN_EVNTS:
+          type: string
+          description: "Tsunami - Number of Events"
+        TSUN_EXPB:
+          type: string
+          description: "Tsunami - Exposure - Building Value"
+        TSUN_EXPP:
+          type: string
+          description: "Tsunami - Exposure - Population"
+        TSUN_EXPPE:
+          type: string
+          description: "Tsunami - Exposure - Population Equivalence"
+        TSUN_EXPT:
+          type: string
+          description: "Tsunami - Exposure - Total"
+        TSUN_EXP_AREA:
+          type: string
+          description: "Tsunami - Exposure - Impacted Area (sq mi)"
+        TSUN_HLRB:
+          type: string
+          description: "Tsunami - Historic Loss Ratio - Buildings"
+        TSUN_HLRP:
+          type: string
+          description: "Tsunami - Historic Loss Ratio - Population"
+        TSUN_HLRR:
+          type: string
+          description: "Tsunami - Historic Loss Ratio - Total Rating"
+        TSUN_RISKR:
+          type: string
+          description: "Tsunami - Hazard Type Risk Index Rating"
+        TSUN_RISKS:
+          type: string
+          description: "Tsunami - Hazard Type Risk Index Score"
+        TSUN_RISKV:
+          type: string
+          description: "Tsunami - Hazard Type Risk Index Value"
+        VLCN_AFREQ:
+          type: string
+          description: "Volcanic Activity - Annualized Frequency"
+        VLCN_ALRB:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss Rate - Building"
+        VLCN_ALRP:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss Rate - Population"
+        VLCN_ALR_NPCTL:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss Rate - National Percentile"
+        VLCN_EALB:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss - Building Value"
+        VLCN_EALP:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss - Population"
+        VLCN_EALPE:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss - Population Equivalence"
+        VLCN_EALR:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss Rating"
+        VLCN_EALS:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss Score"
+        VLCN_EALT:
+          type: string
+          description: "Volcanic Activity - Expected Annual Loss - Total"
+        VLCN_EVNTS:
+          type: string
+          description: "Volcanic Activity - Number of Events"
+        VLCN_EXPB:
+          type: string
+          description: "Volcanic Activity - Exposure - Building Value"
+        VLCN_EXPP:
+          type: string
+          description: "Volcanic Activity - Exposure - Population"
+        VLCN_EXPPE:
+          type: string
+          description: "Volcanic Activity - Exposure - Population Equivalence"
+        VLCN_EXPT:
+          type: string
+          description: "Volcanic Activity - Exposure - Total"
+        VLCN_EXP_AREA:
+          type: string
+          description: "Volcanic Activity - Exposure - Impacted Area (sq mi)"
+        VLCN_HLRB:
+          type: string
+          description: "Volcanic Activity - Historic Loss Ratio - Buildings"
+        VLCN_HLRP:
+          type: string
+          description: "Volcanic Activity - Historic Loss Ratio - Population"
+        VLCN_HLRR:
+          type: string
+          description: "Volcanic Activity - Historic Loss Ratio - Total Rating"
+        VLCN_RISKR:
+          type: string
+          description: "Volcanic Activity - Hazard Type Risk Index Rating"
+        VLCN_RISKS:
+          type: string
+          description: "Volcanic Activity - Hazard Type Risk Index Score"
+        VLCN_RISKV:
+          type: string
+          description: "Volcanic Activity - Hazard Type Risk Index Value"
+        WFIR_AFREQ:
+          type: string
+          description: "Wildfire - Annualized Frequency"
+        WFIR_ALRA:
+          type: string
+          description: "Wildfire - Expected Annual Loss Rate - Agriculture"
+        WFIR_ALRB:
+          type: string
+          description: "Wildfire - Expected Annual Loss Rate - Building"
+        WFIR_ALRP:
+          type: string
+          description: "Wildfire - Expected Annual Loss Rate - Population"
+        WFIR_ALR_NPCTL:
+          type: string
+          description: "Wildfire - Expected Annual Loss Rate - National Percentile"
+        WFIR_EALA:
+          type: string
+          description: "Wildfire - Expected Annual Loss - Agriculture Value"
+        WFIR_EALB:
+          type: string
+          description: "Wildfire - Expected Annual Loss - Building Value"
+        WFIR_EALP:
+          type: string
+          description: "Wildfire - Expected Annual Loss - Population"
+        WFIR_EALPE:
+          type: string
+          description: "Wildfire - Expected Annual Loss - Population Equivalence"
+        WFIR_EALR:
+          type: string
+          description: "Wildfire - Expected Annual Loss Rating"
+        WFIR_EALS:
+          type: string
+          description: "Wildfire - Expected Annual Loss Score"
+        WFIR_EALT:
+          type: string
+          description: "Wildfire - Expected Annual Loss - Total"
+        WFIR_EVNTS:
+          type: string
+          description: "Wildfire - Number of Events"
+        WFIR_EXPA:
+          type: string
+          description: "Wildfire - Exposure - Agriculture Value"
+        WFIR_EXPB:
+          type: string
+          description: "Wildfire - Exposure - Building Value"
+        WFIR_EXPP:
+          type: string
+          description: "Wildfire - Exposure - Population"
+        WFIR_EXPPE:
+          type: string
+          description: "Wildfire - Exposure - Population Equivalence"
+        WFIR_EXPT:
+          type: string
+          description: "Wildfire - Exposure - Total"
+        WFIR_EXP_AREA:
+          type: string
+          description: "Wildfire - Exposure - Impacted Area (sq mi)"
+        WFIR_HLRA:
+          type: string
+          description: "Wildfire - Historic Loss Ratio - Agriculture"
+        WFIR_HLRB:
+          type: string
+          description: "Wildfire - Historic Loss Ratio - Buildings"
+        WFIR_HLRP:
+          type: string
+          description: "Wildfire - Historic Loss Ratio - Population"
+        WFIR_HLRR:
+          type: string
+          description: "Wildfire - Historic Loss Ratio - Total Rating"
+        WFIR_RISKR:
+          type: string
+          description: "Wildfire - Hazard Type Risk Index Rating"
+        WFIR_RISKS:
+          type: string
+          description: "Wildfire - Hazard Type Risk Index Score"
+        WFIR_RISKV:
+          type: string
+          description: "Wildfire - Hazard Type Risk Index Value"
+        WNTW_AFREQ:
+          type: string
+          description: "Winter Weather - Annualized Frequency"
+        WNTW_ALRA:
+          type: string
+          description: "Winter Weather - Expected Annual Loss Rate - Agriculture"
+        WNTW_ALRB:
+          type: string
+          description: "Winter Weather - Expected Annual Loss Rate - Building"
+        WNTW_ALRP:
+          type: string
+          description: "Winter Weather - Expected Annual Loss Rate - Population"
+        WNTW_ALR_NPCTL:
+          type: string
+          description: "Winter Weather - Expected Annual Loss Rate - National Percentile"
+        WNTW_EALA:
+          type: string
+          description: "Winter Weather - Expected Annual Loss - Agriculture Value"
+        WNTW_EALB:
+          type: string
+          description: "Winter Weather - Expected Annual Loss - Building Value"
+        WNTW_EALP:
+          type: string
+          description: "Winter Weather - Expected Annual Loss - Population"
+        WNTW_EALPE:
+          type: string
+          description: "Winter Weather - Expected Annual Loss - Population Equivalence"
+        WNTW_EALR:
+          type: string
+          description: "Winter Weather - Expected Annual Loss Rating"
+        WNTW_EALS:
+          type: string
+          description: "Winter Weather - Expected Annual Loss Score"
+        WNTW_EALT:
+          type: string
+          description: "Winter Weather - Expected Annual Loss - Total"
+        WNTW_EVNTS:
+          type: string
+          description: "Winter Weather - Number of Events"
+        WNTW_EXPA:
+          type: string
+          description: "Winter Weather - Exposure - Agriculture Value"
+        WNTW_EXPB:
+          type: string
+          description: "Winter Weather - Exposure - Building Value"
+        WNTW_EXPP:
+          type: string
+          description: "Winter Weather - Exposure - Population"
+        WNTW_EXPPE:
+          type: string
+          description: "Winter Weather - Exposure - Population Equivalence"
+        WNTW_EXPT:
+          type: string
+          description: "Winter Weather - Exposure - Total"
+        WNTW_EXP_AREA:
+          type: string
+          description: "Winter Weather - Exposure - Impacted Area (sq mi)"
+        WNTW_HLRA:
+          type: string
+          description: "Winter Weather - Historic Loss Ratio - Agriculture"
+        WNTW_HLRB:
+          type: string
+          description: "Winter Weather - Historic Loss Ratio - Buildings"
+        WNTW_HLRP:
+          type: string
+          description: "Winter Weather - Historic Loss Ratio - Population"
+        WNTW_HLRR:
+          type: string
+          description: "Winter Weather - Historic Loss Ratio - Total Rating"
+        WNTW_RISKR:
+          type: string
+          description: "Winter Weather - Hazard Type Risk Index Rating"
+        WNTW_RISKS:
+          type: string
+          description: "Winter Weather - Hazard Type Risk Index Score"
+        WNTW_RISKV:
+          type: string
+          description: "Winter Weather - Hazard Type Risk Index Value"
+    RootAddress:
+      type: object
+      properties:
+        secondary_count:
+          type: integer
+        smarty_key:
+          type: string
+        primary_number:
+          type: string
+        street_name:
+          type: string
+        street_suffix:
+          type: string
+        city_name:
+          type: string
+        state_abbreviation:
+          type: string
+        zipcode:
+          type: string
+        plus4_code:
+          type: string
+    Secondaries:
+      type: object
       properties:
         smarty_key:
           type: string
-        data_set_name:
+        secondary_designator:
           type: string
-        data_subset_name:
+        secondary_number:
           type: string
-        matched_address:
-          $ref: '#/components/schemas/MatchedAddress'
+        plus4_code:
+          type: string
 
   responses:
-    PropertyPrincipalResponse:
+    PropertyPrincipalResponseSearch:
       description: Ok Response
       content:
         application/json:
@@ -1394,8 +2949,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/PropertyPrincipalResponse'
-    PropertyFinancialResponse:
+              $ref: '#/components/schemas/PropertyPrincipalResponseSearch'
+    PropertyPrincipalResponseSmartyKey:
       description: Ok Response
       content:
         application/json:
@@ -1403,8 +2958,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/PropertyFinancialResponse'
-    GeoReferenceResponse:
+              $ref: '#/components/schemas/PropertyPrincipalResponseSmartyKey'
+    PropertyFinancialResponseSearch:
       description: Ok Response
       content:
         application/json:
@@ -1412,8 +2967,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/GeoReferenceResponse'
-    SecondaryResponse:
+              $ref: '#/components/schemas/PropertyFinancialResponseSearch'
+    PropertyFinancialResponseSmartyKey:
       description: Ok Response
       content:
         application/json:
@@ -1421,8 +2976,8 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/SecondaryResponse'
-    SecondaryCountResponse:
+              $ref: '#/components/schemas/PropertyFinancialResponseSmartyKey'
+    GeoReferenceResponseSearch:
       description: Ok Response
       content:
         application/json:
@@ -1430,7 +2985,71 @@ components:
             type: array
             items:
               type: object
-              $ref: '#/components/schemas/SecondaryCountResponse'
+              $ref: '#/components/schemas/GeoReferenceResponseSearch'
+    GeoReferenceResponseSmartyKey:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/GeoReferenceResponseSmartyKey'
+    RiskResponseSearch:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/RiskResponseSearch'
+    RiskResponseSmartyKey:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/RiskResponseSmartyKey'
+    SecondaryResponseSearch:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryResponseSearch'
+    SecondaryResponseSmartyKey:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryResponseSmartyKey'
+    SecondaryCountResponseSearch:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryCountResponseSearch'
+    SecondaryCountResponseSmartyKey:
+      description: Ok Response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              $ref: '#/components/schemas/SecondaryCountResponseSmartyKey'
+
     BadRequest:
       description: >
         Bad Request (Malformed Payload): A GET request lacked a street field, or the request body of a POST request contained malformed JSON. (example: submitting an integer value in the ZIP Code field when a string is expected)
